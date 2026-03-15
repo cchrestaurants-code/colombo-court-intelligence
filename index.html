@@ -3,298 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colombo Court — Intelligence Hub</title>
+<title>Colombo Court — Monthly Intelligence Hub</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg:      #0a0a0c;
-  --s1:      #141417;
-  --s2:      #1c1c21;
-  --s3:      #242428;
-  --s4:      #2e2e34;
-  --red:     #9B2020;
-  --red2:    #C02828;
-  --red3:    #D93030;
-  --rdim:    rgba(192,40,40,0.18);
-  --rglow:   rgba(192,40,40,0.09);
-  --crimson: #6B1010;
-  --w1:      #FFFFFF;
-  --w2:      #E8E8F0;
-  --w3:      #B0B0C0;
-  --w4:      #808090;
-  --w5:      #404050;
-  --gold:    #E0B050;
-  --gdim:    rgba(224,176,80,0.2);
-  --green:   #38A865;
-  --glow:    rgba(56,168,101,0.2);
-  --blue:    #4A80C0;
-  --bord:    #2a2a32;
-  --bord2:   #3a2020;
-  --fd: 'Poppins', sans-serif;
-  --fu: 'Poppins', sans-serif;
-  --fm: 'Poppins', monospace;
+  --bg:    #0a0a0c;
+  --s1:    #141417;
+  --s2:    #1c1c21;
+  --s3:    #242428;
+  --s4:    #2e2e34;
+  --red:   #9B2020;
+  --red2:  #C02828;
+  --red3:  #D93030;
+  --rdim:  rgba(192,40,40,0.16);
+  --gold:  #E0B050;
+  --green: #38A865;
+  --blue:  #4A80C0;
+  --bord:  #2a2a32;
+  --bord2: #3a2020;
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--w1);font-family:var(--fu);font-size:14px;font-weight:400;min-height:100vh;overflow-x:hidden;line-height:1.6;}
+body{background:var(--bg);color:#FFFFFF;font-family:'Poppins',sans-serif;font-size:14px;font-weight:400;min-height:100vh;overflow-x:hidden;line-height:1.6;}
 
-body::before{content:'';position:fixed;inset:0;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;opacity:0.5;}
-body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:420px;
-  background:radial-gradient(circle,rgba(139,26,26,0.09) 0%,transparent 65%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(192,40,40,0.08) 0%,transparent 65%);pointer-events:none;z-index:0;}
 
 /* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:300;height:56px;background:rgba(8,8,9,0.97);
-  backdrop-filter:blur(20px);border-bottom:1px solid var(--bord2);
-  display:flex;align-items:center;justify-content:space-between;padding:0 22px;}
-.hbrand{display:flex;align-items:center;gap:11px;}
-.hcrest{width:28px;height:28px;border-radius:4px;
-  background:linear-gradient(135deg,var(--red) 0%,var(--crimson) 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-size:13px;font-weight:700;color:var(--w1);
-  box-shadow:0 0 10px rgba(139,26,26,0.35);flex-shrink:0;}
-.hname{font-family:var(--fd);font-size:14px;font-weight:700;color:#FFFFFF;}
-.hsub{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#C0C0D0;margin-top:1px;}
-.hnav{display:flex;gap:1px;}
-.ntab{padding:5px 11px;border:none;background:transparent;cursor:pointer;
-  font-family:var(--fu);font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;
-  color:#A0A0B8;border-radius:4px;transition:all 0.15s;position:relative;}
-.ntab:hover{color:#FFFFFF;background:var(--s2);}
-.ntab.on{color:#FFFFFF;background:var(--rdim);}
-.ntab.on::after{content:'';position:absolute;bottom:-1px;left:11px;right:11px;height:1px;background:var(--red2);}
+.hdr{position:sticky;top:0;z-index:300;height:58px;background:rgba(10,10,12,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bord2);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.hbrand{display:flex;align-items:center;gap:12px;}
+.hcrest{width:32px;height:32px;border-radius:6px;background:linear-gradient(135deg,var(--red2) 0%,#6B1010 100%);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;box-shadow:0 0 12px rgba(192,40,40,0.4);flex-shrink:0;}
+.hname{font-size:15px;font-weight:700;color:#fff;}
+.hsub{font-size:10px;font-weight:400;color:#B0B0C0;margin-top:1px;}
+.hnav{display:flex;gap:2px;}
+.ntab{padding:6px 12px;border:none;background:transparent;cursor:pointer;font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#909098;border-radius:4px;transition:all 0.15s;position:relative;}
+.ntab:hover{color:#fff;background:var(--s2);}
+.ntab.on{color:#fff;background:var(--rdim);}
+.ntab.on::after{content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:var(--red2);border-radius:2px;}
 .hright{display:flex;align-items:center;gap:12px;}
-.hdate{font-family:var(--fm);font-size:11px;color:#C8C8D8;font-weight:500;}
-.hbadge{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;
-  letter-spacing:0.1em;text-transform:uppercase;color:#50D888;
-  padding:4px 10px;border-radius:20px;background:rgba(56,168,101,0.15);border:1px solid rgba(56,168,101,0.35);}
+.hdate{font-size:11px;font-weight:500;color:#C0C0D0;}
+.hbadge{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#50D888;padding:4px 10px;border-radius:20px;background:rgba(56,168,101,0.15);border:1px solid rgba(56,168,101,0.3);}
 .hdot{width:5px;height:5px;border-radius:50%;background:#50D888;animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 
 /* ── LAYOUT ── */
 .app{position:relative;z-index:1;}
-.page{display:none;padding:22px;min-height:calc(100vh - 56px);}
+.page{display:none;padding:24px;min-height:calc(100vh - 58px);}
 .page.on{display:block;}
 
 /* ── PAGE HEADER ── */
-.phdr{display:flex;align-items:flex-start;justify-content:space-between;
-  margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bord2);}
-.ptitle{font-family:var(--fd);font-size:22px;font-weight:700;color:#FFFFFF;line-height:1;}
-.psub{font-size:13px;color:#C0C0D0;margin-top:4px;font-weight:400;}
-.pacts{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.phdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--bord2);}
+.ptitle{font-size:22px;font-weight:700;color:#fff;line-height:1.2;}
+.psub{font-size:13px;font-weight:400;color:#C0C0D0;margin-top:4px;}
+.pacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 
 /* ── CARDS ── */
-.card{background:var(--s1);border:1px solid var(--bord);border-radius:8px;padding:16px;margin-bottom:12px;transition:border-color 0.2s;}
-.card:hover{border-color:var(--bord2);}
+.card{background:var(--s1);border:1px solid var(--bord);border-radius:10px;padding:18px;margin-bottom:14px;transition:border-color 0.2s;}
 .card.rl{border-left:3px solid var(--red2);}
 .card.gl{border-left:3px solid var(--gold);}
-.ctitle{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#D0D0E0;margin-bottom:11px;}
-.chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.card.bl{border-left:3px solid var(--blue);}
+.card.grn{border-left:3px solid var(--green);}
+.ctitle{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#D0D0E0;margin-bottom:12px;}
+.chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 
 /* ── GRIDS ── */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;}
-.gsb{display:grid;grid-template-columns:290px 1fr;gap:12px;}
-.gsb3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.gsb{display:grid;grid-template-columns:320px 1fr;gap:14px;}
 
 /* ── KPI ── */
-.kpi{background:var(--s1);border:1px solid var(--bord);border-radius:8px;padding:15px 17px;
-  position:relative;overflow:hidden;transition:all 0.2s;}
-.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--red),var(--red2));
-  transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.kpi{background:var(--s1);border:1px solid var(--bord);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;transition:all 0.2s;}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--red2));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
 .kpi:hover::after{transform:scaleX(1);}
-.klbl{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#C0C0D0;margin-bottom:5px;}
-.kval{font-family:var(--fd);font-size:32px;font-weight:600;color:#FFFFFF;line-height:1;}
-.kval.r{color:#FF6060;}
+.klbl{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#C0C0D0;margin-bottom:6px;}
+.kval{font-size:30px;font-weight:700;color:#fff;line-height:1;}
+.kval.r{color:#FF7070;}
 .kval.g{color:#E8C060;}
 .kval.gr{color:#50D888;}
-.ksub{font-size:11px;color:#B0B0C8;margin-top:4px;font-weight:400;}
+.ksub{font-size:11px;font-weight:400;color:#B0B0C0;margin-top:4px;}
 
 /* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;
-  border-radius:5px;border:none;cursor:pointer;font-family:var(--fu);
-  font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.15s;}
-.br{background:var(--red2);color:#FFFFFF;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:6px;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;transition:all 0.15s;}
+.br{background:var(--red2);color:#fff;}
 .br:hover{background:var(--red3);}
 .bo{background:transparent;color:#D0D0E0;border:1px solid #404050;}
-.bo:hover{color:#FFFFFF;border-color:#808090;}
+.bo:hover{color:#fff;border-color:#808090;}
 .bg{background:var(--gold);color:#0a0a0c;}
 .bg:hover{background:#F0C060;}
-.bgr{background:#38A865;color:#FFFFFF;}
+.bgr{background:var(--green);color:#fff;}
 .bgr:hover{background:#48C878;}
-.bbl{background:var(--blue);color:#FFFFFF;}
+.bbl{background:var(--blue);color:#fff;}
 .bbl:hover{background:#5A90D0;}
-.bsm{padding:5px 10px;font-size:11px;}
-.btn:disabled{opacity:0.4;cursor:not-allowed;pointer-events:none;}
+.bsm{padding:6px 12px;font-size:11px;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
 
-/* ── COPY-FOR-CLAUDE BUTTON ── */
-.cfc-btn{display:flex;align-items:center;gap:7px;width:100%;padding:11px 14px;
-  border-radius:6px;border:1px dashed rgba(224,176,80,0.5);
-  background:rgba(224,176,80,0.08);cursor:pointer;transition:all 0.2s;
-  font-family:var(--fu);font-size:12px;font-weight:600;letter-spacing:0.05em;
-  text-transform:uppercase;color:#E8C060;}
-.cfc-btn:hover{background:rgba(224,176,80,0.16);border-color:#E0B050;}
-.cfc-icon{font-size:14px;}
+/* ── COPY BUTTON ── */
+.cfc{display:flex;align-items:center;gap:8px;width:100%;padding:12px 16px;border-radius:8px;border:1.5px dashed rgba(224,176,80,0.5);background:rgba(224,176,80,0.07);cursor:pointer;transition:all 0.2s;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#E8C060;}
+.cfc:hover{background:rgba(224,176,80,0.14);border-color:var(--gold);}
+.cfc-icon{font-size:16px;}
+
+/* ── PERPLEXITY BUTTON ── */
+.pxbtn{display:flex;align-items:center;gap:8px;width:100%;padding:12px 16px;border-radius:8px;border:1.5px dashed rgba(74,128,192,0.5);background:rgba(74,128,192,0.07);cursor:pointer;transition:all 0.2s;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#7EB0E8;}
+.pxbtn:hover{background:rgba(74,128,192,0.14);border-color:var(--blue);}
+
+/* ── SEARCH LINK BUTTON ── */
+.srch-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:7px;border:1px solid #2a2a32;background:var(--s2);cursor:pointer;transition:all 0.2s;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;color:#E0E0F0;text-decoration:none;margin-bottom:8px;}
+.srch-btn:hover{border-color:#484858;background:var(--s3);color:#fff;}
+.srch-icon{font-size:15px;flex-shrink:0;}
+.srch-label{flex:1;}
+.srch-arrow{color:#808090;font-size:12px;}
 
 /* ── FORMS ── */
-.lbl{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#C8C8D8;margin-bottom:5px;display:block;}
-.ifield,.sfield,.tfield{width:100%;background:var(--s2);border:1px solid #383840;
-  border-radius:5px;color:#FFFFFF;font-family:var(--fu);font-size:13px;font-weight:400;
-  padding:8px 10px;outline:none;transition:border-color 0.15s;}
+.lbl{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#C8C8D8;margin-bottom:6px;display:block;}
+.ifield,.sfield,.tfield{width:100%;background:var(--s2);border:1px solid #383840;border-radius:6px;color:#fff;font-family:'Poppins',sans-serif;font-size:13px;font-weight:400;padding:9px 12px;outline:none;transition:border-color 0.15s;}
 .ifield:focus,.sfield:focus,.tfield:focus{border-color:var(--red2);}
 .ifield::placeholder,.tfield::placeholder{color:#606070;}
-.sfield option{background:var(--s2);color:#FFFFFF;}
+.sfield option{background:var(--s2);color:#fff;}
 .tfield{resize:vertical;min-height:90px;line-height:1.7;}
-.irow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.irow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
-.igrp{display:flex;flex-direction:column;}
+.irow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.igrp{display:flex;flex-direction:column;margin-bottom:12px;}
 
-/* ── SCORE INPUT ── */
-.score-input-wrap{position:relative;}
-.score-input{font-family:var(--fd);font-size:28px;font-weight:600;width:80px;
-  background:var(--s2);border:1px solid #383840;border-radius:5px;
-  color:#FF7070;text-align:center;padding:6px 4px;outline:none;}
-.score-input:focus{border-color:var(--red2);}
-.score-max{font-size:13px;color:#C0C0D0;margin-left:4px;}
-
-/* ── SENTIMENT BAR ── */
-.sent-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:6px 0;}
-.sb-pos{background:#38A865;}
-.sb-neu{background:#606070;}
-.sb-neg{background:#C02828;}
-
-/* ── LOADER ── */
-.ldr{display:none;align-items:center;gap:9px;padding:11px 13px;
-  background:var(--s2);border:1px solid var(--bord2);border-radius:5px;
-  margin-top:9px;font-size:12px;font-weight:500;color:#D0D0E0;}
-.ldr.on{display:flex;}
-.spin{width:13px;height:13px;border-radius:50%;border:2px solid #404050;border-top-color:var(--red2);animation:spin 0.7s linear infinite;flex-shrink:0;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── PASTE BACK BOX ── */
-.pasteback{background:var(--s2);border:1px solid #383840;border-left:3px solid #E0B050;
-  border-radius:6px;padding:14px;margin-top:10px;}
-.pb-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
-  color:#E8C060;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.pb-area{width:100%;background:var(--s3);border:1px solid #383840;border-radius:4px;
-  color:#E8E8F0;font-family:var(--fu);font-size:12px;padding:10px;
-  resize:vertical;min-height:120px;line-height:1.75;outline:none;}
+/* ── PASTE BACK ── */
+.pasteback{background:var(--s2);border:1px solid #383840;border-left:3px solid var(--gold);border-radius:8px;padding:14px;margin-top:10px;}
+.pb-lbl{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#E8C060;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.pb-area{width:100%;background:var(--s3);border:1px solid #383840;border-radius:6px;color:#E8E8F0;font-family:'Poppins',sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:130px;line-height:1.75;outline:none;}
 .pb-area::placeholder{color:#606070;}
-.pb-area:focus{border-color:#E0B050;}
+.pb-area:focus{border-color:var(--gold);}
 
-/* ── SAVED OUTPUT BOX ── */
-.outbox{background:var(--s2);border:1px solid var(--bord2);border-left:3px solid var(--red2);
-  border-radius:6px;padding:14px;margin-top:10px;display:none;}
+/* ── OUTPUT BOX ── */
+.outbox{background:var(--s2);border:1px solid var(--bord2);border-left:3px solid var(--red2);border-radius:8px;padding:16px;margin-top:12px;display:none;}
 .outbox.on{display:block;}
 .ob-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ob-lbl{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#FF7070;}
-.ob-body{font-family:var(--fu);font-size:12px;line-height:1.8;color:#E8E8F0;
-  white-space:pre-wrap;max-height:420px;overflow-y:auto;}
+.ob-lbl{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FF7070;}
+.ob-body{font-size:12px;line-height:1.85;color:#E8E8F0;white-space:pre-wrap;max-height:480px;overflow-y:auto;}
 
 /* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;
-  font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;}
-.b-pos{background:rgba(56,168,101,0.2);color:#60E890;border:1px solid rgba(56,168,101,0.4);}
-.b-neg{background:rgba(192,40,40,0.2);color:#FF8080;border:1px solid rgba(192,40,40,0.4);}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;}
+.b-pos{background:rgba(56,168,101,0.2);color:#60E890;border:1px solid rgba(56,168,101,0.35);}
+.b-neg{background:rgba(192,40,40,0.2);color:#FF8080;border:1px solid rgba(192,40,40,0.35);}
 .b-neu{background:var(--s3);color:#C0C0D0;border:1px solid #383840;}
-.b-hot{background:var(--rdim);color:#FF7070;border:1px solid var(--bord2);}
-.b-gld{background:rgba(224,176,80,0.2);color:#E8C060;border:1px solid rgba(224,176,80,0.35);}
+.b-gld{background:rgba(224,176,80,0.2);color:#E8C060;border:1px solid rgba(224,176,80,0.3);}
 
-/* ── COMP CARD ── */
-.ccard{background:var(--s2);border:1px solid #2a2a32;border-radius:6px;
-  padding:11px 13px;display:flex;align-items:center;gap:9px;margin-bottom:7px;transition:border-color 0.15s;}
+/* ── COMPETITOR CARD ── */
+.ccard{background:var(--s2);border:1px solid #2a2a32;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px;transition:border-color 0.15s;}
 .ccard:hover{border-color:#484858;}
-.cavatar{width:32px;height:32px;border-radius:5px;
-  background:linear-gradient(135deg,var(--red2) 0%,var(--crimson) 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-size:13px;font-weight:700;color:#FFFFFF;flex-shrink:0;}
+.cavatar{width:34px;height:34px;border-radius:6px;background:linear-gradient(135deg,var(--red2) 0%,#6B1010 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
 .cinfo{flex:1;min-width:0;}
-.cname{font-size:13px;font-weight:600;color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cmeta{font-size:11px;color:#B0B0C0;margin-top:2px;}
+.cname{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cmeta{font-size:11px;color:#B0B0C0;margin-top:1px;}
 .cacts{display:flex;gap:5px;align-items:center;}
 
 /* ── TABLE ── */
-.tbl{width:100%;border-collapse:collapse;font-size:13px;}
-.tbl th{background:var(--s2);color:#C8C8D8;font-size:11px;font-weight:600;
-  letter-spacing:0.08em;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid #2a2a32;}
-.tbl td{padding:9px 10px;border-bottom:1px solid #1e1e26;color:#E0E0F0;vertical-align:middle;}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{background:var(--s2);color:#C8C8D8;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:1px solid #2a2a32;}
+.tbl td{padding:10px 12px;border-bottom:1px solid #1e1e26;color:#E0E0F0;vertical-align:middle;}
 .tbl tr:last-child td{border-bottom:none;}
 .tbl tr:hover td{background:var(--s2);}
 .tbl .our td{background:rgba(192,40,40,0.08);}
 
 /* ── CHART ── */
-.cwrap{position:relative;height:200px;}
-.cwrap-lg{height:260px;}
+.cwrap{position:relative;height:220px;}
+.cwrap-lg{height:280px;}
+
+/* ── WIZARD STEPS ── */
+.wizard-steps{display:flex;gap:0;margin-bottom:24px;border-radius:8px;overflow:hidden;border:1px solid #2a2a32;}
+.ws{flex:1;padding:12px 8px;text-align:center;background:var(--s2);cursor:pointer;transition:all 0.2s;border-right:1px solid #2a2a32;font-size:11px;font-weight:600;color:#909098;letter-spacing:0.04em;}
+.ws:last-child{border-right:none;}
+.ws:hover{background:var(--s3);color:#D0D0E0;}
+.ws.on{background:var(--rdim);color:#fff;border-bottom:2px solid var(--red2);}
+.ws-num{font-size:16px;font-weight:700;color:var(--red2);display:block;margin-bottom:2px;}
+.ws.on .ws-num{color:#FF7070;}
+
+.wstep{display:none;}
+.wstep.on{display:block;}
+
+/* ── STEP INSTRUCTION BOX ── */
+.step-box{background:var(--s2);border:1px solid #2a2a32;border-radius:8px;padding:16px;margin-bottom:16px;}
+.step-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.step-desc{font-size:13px;color:#C0C0D0;line-height:1.7;}
+
+/* ── SCORE GUIDE ── */
+.score-guide{background:var(--s2);border-radius:8px;padding:14px;margin-bottom:12px;}
+.sg-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12px;border-bottom:1px solid #1e1e26;}
+.sg-row:last-child{border-bottom:none;}
+.sg-range{font-weight:700;width:60px;flex-shrink:0;}
+.sg-label{flex:1;color:#C0C0D0;}
+.sg-example{font-size:11px;color:#909098;}
 
 /* ── HISTORY ITEM ── */
-.hitem{display:flex;align-items:center;gap:9px;padding:9px 11px;
-  border:1px solid var(--bord);border-radius:5px;margin-bottom:6px;
-  cursor:pointer;transition:all 0.15s;background:var(--s2);}
-.hitem:hover{border-color:var(--red);background:var(--rglow);}
-.hitem.sel{border-color:var(--red2);background:var(--rdim);}
-.hdate{font-family:var(--fm);font-size:11px;color:var(--gold);width:80px;flex-shrink:0;}
+.hitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #2a2a32;border-radius:7px;margin-bottom:7px;cursor:pointer;transition:all 0.15s;background:var(--s2);}
+.hitem:hover{border-color:var(--red2);background:rgba(192,40,40,0.07);}
+.hitem.sel{border-color:var(--red2);background:rgba(192,40,40,0.12);}
+.hmonth{font-size:12px;font-weight:600;color:#E8C060;width:100px;flex-shrink:0;}
 
-/* ── TAG CLOUD ── */
-.tcloud{display:flex;flex-wrap:wrap;gap:5px;}
-.ttag{padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;
-  background:var(--s2);border:1px solid #383840;color:#C0C0D0;cursor:pointer;transition:all 0.15s;}
-.ttag:hover,.ttag.on{background:var(--rdim);border-color:var(--red2);color:#FFFFFF;}
-
-/* ── PLATFORM TABS ── */
-.ptabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;}
-.ptab{padding:7px 13px;border-radius:5px;border:1px solid #383840;background:var(--s2);
-  color:#C8C8D8;font-family:var(--fu);font-size:12px;font-weight:600;letter-spacing:0.03em;cursor:pointer;transition:all 0.15s;}
-.ptab:hover{color:#FFFFFF;border-color:#808090;}
-.ptab.on{background:var(--red2);color:#FFFFFF;border-color:var(--red3);}
-
-/* ── SAVED ITEMS ── */
-.sitem{background:var(--s2);border:1px solid #2a2a32;border-radius:6px;
-  padding:12px 14px;margin-bottom:7px;cursor:pointer;transition:all 0.15s;}
+/* ── SAVED ITEM ── */
+.sitem{background:var(--s2);border:1px solid #2a2a32;border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;}
 .sitem:hover{border-color:#484858;}
-.si-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
-.si-title{font-size:13px;font-weight:600;color:#FFFFFF;}
-.si-date{font-size:11px;color:#B0B0C0;font-weight:400;}
+.si-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
+.si-title{font-size:13px;font-weight:600;color:#fff;}
+.si-date{font-size:11px;color:#B0B0C0;}
 .si-prev{font-size:12px;color:#A0A0B8;line-height:1.5;}
 
 /* ── MODAL ── */
-.mov{display:none;position:fixed;inset:0;z-index:400;
-  background:rgba(0,0,0,0.88);align-items:center;justify-content:center;}
+.mov{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;}
 .mov.on{display:flex;}
-.modal{background:var(--s1);border:1px solid var(--bord2);border-radius:10px;
-  padding:24px;width:90%;max-width:620px;max-height:88vh;overflow-y:auto;}
-.mtitle{font-family:var(--fd);font-size:18px;font-weight:700;color:#FFFFFF;margin-bottom:3px;}
-.msub{font-size:12px;color:#B0B0C0;margin-bottom:16px;}
-.mbody{font-family:var(--fu);font-size:12px;line-height:1.85;color:#E8E8F0;
-  white-space:pre-wrap;background:var(--s2);border:1px solid #383840;
-  border-radius:5px;padding:12px;max-height:48vh;overflow-y:auto;}
-.macts{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap;}
-
-/* ── HOW-TO BANNER ── */
-.how-banner{background:linear-gradient(135deg,var(--s1) 0%,var(--s2) 100%);
-  border:1px solid #3a2020;border-radius:8px;padding:16px 20px;margin-bottom:16px;
-  position:relative;overflow:hidden;}
-.how-banner::after{content:'◆';position:absolute;right:20px;top:50%;
-  transform:translateY(-50%);font-size:60px;color:#282830;opacity:0.8;}
-.hw-title{font-family:var(--fd);font-size:16px;font-weight:600;color:#E8C060;margin-bottom:5px;}
-.hw-steps{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;}
-.hw-step{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#C8C8D8;flex:1;min-width:160px;line-height:1.5;}
-.hw-num{width:22px;height:22px;border-radius:50%;background:var(--red2);color:#FFFFFF;
-  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.modal{background:var(--s1);border:1px solid var(--bord2);border-radius:12px;padding:26px;width:90%;max-width:640px;max-height:88vh;overflow-y:auto;}
+.mtitle{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;}
+.msub{font-size:12px;color:#B0B0C0;margin-bottom:18px;}
+.mbody{font-size:12px;line-height:1.85;color:#E8E8F0;white-space:pre-wrap;background:var(--s2);border:1px solid #383840;border-radius:6px;padding:14px;max-height:50vh;overflow-y:auto;}
+.macts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
 
 /* ── SHEETS STATUS ── */
-.sheets-status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;padding:9px 12px;
-  border-radius:5px;margin-bottom:12px;}
-.sheets-ok{background:rgba(56,168,101,0.15);color:#60E890;border:1px solid rgba(56,168,101,0.35);}
-.sheets-no{background:rgba(192,40,40,0.15);color:#FF8080;border:1px solid rgba(192,40,40,0.35);}
+.sheets-status{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:10px 14px;border-radius:7px;margin-bottom:14px;}
+.sheets-ok{background:rgba(56,168,101,0.15);color:#60E890;border:1px solid rgba(56,168,101,0.3);}
+.sheets-no{background:rgba(192,40,40,0.12);color:#FF8080;border:1px solid rgba(192,40,40,0.3);}
 
-/* ── COMPARE ── */
-.vs-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap;}
+/* ── NOTIF BANNER ── */
+.nbanner{background:rgba(192,40,40,0.1);border:1px solid #3a2020;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;color:#E8E8F0;}
+
+/* ── ALERT FEED ── */
+.aitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #1e1e26;font-size:12px;}
+.aitem:last-child{border-bottom:none;}
+.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── TAG CLOUD ── */
+.tcloud{display:flex;flex-wrap:wrap;gap:6px;}
+.ttag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--s2);border:1px solid #383840;color:#C0C0D0;cursor:pointer;transition:all 0.15s;}
+.ttag:hover,.ttag.on{background:var(--rdim);border-color:var(--red2);color:#fff;}
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px;height:4px;}
@@ -306,69 +245,37 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fi{animation:fi 0.3s ease forwards;}
 
-/* ── ALERT FEED ── */
-.aitem{display:flex;align-items:center;gap:9px;padding:9px 0;
-  border-bottom:1px solid #1e1e26;font-size:13px;}
-.aitem:last-child{border-bottom:none;}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-
-/* ── PROGRESS RING ── */
-.score-ring{position:relative;display:inline-flex;align-items:center;justify-content:center;}
-.score-ring svg{transform:rotate(-90deg);}
-.score-ring-val{position:absolute;font-family:var(--fd);font-size:20px;font-weight:600;color:#FF7070;}
-
-/* ── NOTIFICATION BANNER ── */
-.notif-banner{background:rgba(192,40,40,0.12);
-  border:1px solid #3a2020;border-radius:6px;padding:11px 16px;
-  display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px;color:#E8E8F0;}
-.notif-icon{font-size:16px;flex-shrink:0;}
-
-/* ── HISTORY ITEM ── */
-.hitem{display:flex;align-items:center;gap:9px;padding:9px 11px;
-  border:1px solid #2a2a32;border-radius:5px;margin-bottom:6px;
-  cursor:pointer;transition:all 0.15s;background:var(--s2);}
-.hitem:hover{border-color:var(--red2);background:rgba(192,40,40,0.08);}
-.hitem.sel{border-color:var(--red2);background:rgba(192,40,40,0.14);}
-.hdate{font-size:11px;color:#E8C060;width:90px;flex-shrink:0;font-weight:500;}
-
-/* ── STRAT SAVED DISPLAY ── */
-.strat-saved{background:var(--s2);border:1px solid #383840;border-left:3px solid #E0B050;
-  border-radius:5px;padding:12px 14px;font-size:12px;line-height:1.7;
-  color:#E0E0F0;white-space:pre-wrap;min-height:60px;}
-
 @media(max-width:900px){
-  .gsb,.gsb3,.g4{grid-template-columns:1fr;}
-  .hnav{display:none;}
+  .gsb,.g4,.g3{grid-template-columns:1fr;}
   .g2{grid-template-columns:1fr;}
+  .hnav{display:none;}
+  .wizard-steps{flex-wrap:wrap;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══════ HEADER ══════ -->
+<!-- ══ HEADER ══ -->
 <header class="hdr">
   <div class="hbrand">
     <div class="hcrest">C</div>
     <div>
       <div class="hname">Colombo Court Hotel & Spa</div>
-      <div class="hsub">Intelligence Hub · v4 · Free Edition</div>
+      <div class="hsub">Monthly Intelligence Hub · Created by Shazwan Yoonus</div>
     </div>
   </div>
   <nav class="hnav">
     <button class="ntab on"  onclick="nav('dash')">Dashboard</button>
-    <button class="ntab"     onclick="nav('checkin')">Daily Check-in</button>
-    <button class="ntab"     onclick="nav('brand')">Brand</button>
+    <button class="ntab"     onclick="nav('review')">Monthly Review</button>
     <button class="ntab"     onclick="nav('competitors')">Competitors</button>
-    <button class="ntab"     onclick="nav('compare')">Compare</button>
-    <button class="ntab"     onclick="nav('trends')">Trends</button>
-    <button class="ntab"     onclick="nav('content')">Content</button>
-    <button class="ntab"     onclick="nav('reports')">Reports</button>
+    <button class="ntab"     onclick="nav('report')">Report</button>
+    <button class="ntab"     onclick="nav('content')">Content Plan</button>
     <button class="ntab"     onclick="nav('history')">History</button>
     <button class="ntab"     onclick="nav('saved')">Saved</button>
     <button class="ntab"     onclick="nav('settings')">Settings</button>
   </nav>
   <div class="hright">
-    <div class="hbadge"><div class="hdot"></div>Free · No API</div>
+    <div class="hbadge"><div class="hdot"></div>Free</div>
     <div class="hdate" id="hDate"></div>
   </div>
 </header>
@@ -380,38 +287,35 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
   <div class="phdr">
     <div>
       <div class="ptitle">Intelligence Dashboard</div>
-      <div class="psub">Colombo Court Hotel & Spa — Marketing Command Centre</div>
+      <div class="psub">Colombo Court Hotel & Spa — Monthly Marketing Overview</div>
     </div>
     <div class="pacts">
       <button class="btn bo bsm" onclick="exportExcel()">↓ Download All Data (Excel)</button>
-      <button class="btn br bsm" onclick="nav('checkin')">+ Daily Check-in</button>
+      <button class="btn br bsm" onclick="nav('review')">Start Monthly Review</button>
     </div>
   </div>
 
-  <div id="todayBanner"></div>
+  <div id="dashBanner"></div>
 
-  <!-- KPIs -->
-  <div class="g4" style="margin-bottom:12px;">
-    <div class="kpi"><div class="klbl">Brand Sentiment Today</div><div class="kval r" id="k-sent">—</div><div class="ksub">Score /100</div></div>
-    <div class="kpi"><div class="klbl">Web Mentions</div><div class="kval" id="k-ment">—</div><div class="ksub">Estimated today</div></div>
-    <div class="kpi"><div class="klbl">Competitors Tracked</div><div class="kval g" id="k-comp">6</div><div class="ksub">In watchlist</div></div>
-    <div class="kpi"><div class="klbl">Days Recorded</div><div class="kval gr" id="k-days">0</div><div class="ksub">Total history</div></div>
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="kpi"><div class="klbl">Brand Sentiment</div><div class="kval r" id="k-sent">—</div><div class="ksub">Latest score /100</div></div>
+    <div class="kpi"><div class="klbl">Reviews Tracked</div><div class="kval" id="k-rev">—</div><div class="ksub">This month</div></div>
+    <div class="kpi"><div class="klbl">Competitors</div><div class="kval g" id="k-comp">6</div><div class="ksub">In watchlist</div></div>
+    <div class="kpi"><div class="klbl">Monthly Reviews Done</div><div class="kval gr" id="k-months">0</div><div class="ksub">Total history</div></div>
   </div>
 
-  <!-- Charts row 1 -->
-  <div class="g2" style="margin-bottom:12px;">
+  <div class="g2" style="margin-bottom:14px;">
     <div class="card">
-      <div class="ctitle">Sentiment Score — All Brands (Latest)</div>
+      <div class="ctitle">Brand Sentiment — All Brands (Latest Month)</div>
       <div class="cwrap"><canvas id="cSent"></canvas></div>
     </div>
     <div class="card">
-      <div class="ctitle">Colombo Court — Sentiment Trend (Last 30 Days)</div>
+      <div class="ctitle">Colombo Court Sentiment Trend — Month on Month</div>
       <div class="cwrap"><canvas id="cTrend"></canvas></div>
     </div>
   </div>
 
-  <!-- Charts row 2 -->
-  <div class="g2" style="margin-bottom:12px;">
+  <div class="g2" style="margin-bottom:14px;">
     <div class="card">
       <div class="ctitle">Mention Volume — All Brands</div>
       <div class="cwrap"><canvas id="cMent"></canvas></div>
@@ -422,218 +326,333 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
     </div>
   </div>
 
-  <!-- Alert feed -->
   <div class="card rl">
     <div class="chdr">
-      <div class="ctitle" style="margin-bottom:0;">Activity Feed</div>
+      <div class="ctitle" style="margin-bottom:0;">Activity Log</div>
       <span class="badge b-gld">Live</span>
     </div>
-    <div id="alertFeed"><div style="color:#A0A0B8;font-size:12px;padding:8px 0;">No activity yet — complete your first daily check-in.</div></div>
+    <div id="alertFeed"><div style="color:#A0A0B8;font-size:12px;padding:8px 0;">No activity yet — start your first monthly review.</div></div>
   </div>
 </div>
 
-<!-- ══════════════════════ DAILY CHECK-IN ══════════════════════ -->
-<div class="page" id="page-checkin">
+<!-- ══════════════════════ MONTHLY REVIEW ══════════════════════ -->
+<div class="page" id="page-review">
   <div class="phdr">
     <div>
-      <div class="ptitle">Daily Check-in</div>
-      <div class="psub">Your 10-minute morning intelligence routine</div>
+      <div class="ptitle">Monthly Review Wizard</div>
+      <div class="psub">Guided step-by-step — complete all 5 steps then generate your report</div>
+    </div>
+    <div class="pacts">
+      <div id="reviewMonthLabel" style="font-size:12px;font-weight:600;color:#E8C060;padding:6px 12px;background:var(--s2);border-radius:6px;border:1px solid #383840;"></div>
     </div>
   </div>
 
-  <div class="how-banner">
-    <div class="hw-title">How this works — 10 minutes each morning</div>
-    <div class="hw-steps">
-      <div class="hw-step"><div class="hw-num">1</div><span>Fill in what you observed — reviews seen, competitor activity, notes</span></div>
-      <div class="hw-step"><div class="hw-num">2</div><span>Click <strong style="color:var(--gold)">Copy for Claude</strong> — paste into Claude.ai chat for AI analysis</span></div>
-      <div class="hw-step"><div class="hw-num">3</div><span>Paste the AI response back here — it saves to your history automatically</span></div>
-    </div>
+  <!-- Wizard step tabs -->
+  <div class="wizard-steps">
+    <div class="ws on" onclick="goStep(1)"><span class="ws-num">1</span>Brand</div>
+    <div class="ws" onclick="goStep(2)"><span class="ws-num">2</span>Reviews</div>
+    <div class="ws" onclick="goStep(3)"><span class="ws-num">3</span>Competitors</div>
+    <div class="ws" onclick="goStep(4)"><span class="ws-num">4</span>Trends</div>
+    <div class="ws" onclick="goStep(5)"><span class="ws-num">5</span>Build Report</div>
   </div>
 
-  <div class="g2">
-    <div>
-      <!-- Brand check-in -->
-      <div class="card rl">
-        <div class="ctitle">Colombo Court — Today's Brand Status</div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Sentiment Score (your estimate)</label>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <input type="number" class="ifield score-input" id="ci-sent" min="0" max="100" placeholder="75" style="width:80px;">
-              <span class="score-max">/100</span>
+  <!-- ── STEP 1: Brand ── -->
+  <div class="wstep on" id="step1">
+    <div class="step-box">
+      <div class="step-title">Step 1 — Your Brand: Colombo Court Hotel & Spa</div>
+      <div class="step-desc">Check your own online presence this month. Open the search links below, read what you find, and fill in the numbers.</div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="ctitle">Search Links — Click to Open</div>
+          <a class="srch-btn" href="https://www.google.com/search?q=Colombo+Court+Hotel+Spa+reviews" target="_blank"><span class="srch-icon">🔍</span><span class="srch-label">Google Reviews Search</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://www.tripadvisor.com/Search?q=Colombo+Court+Hotel" target="_blank"><span class="srch-icon">🌍</span><span class="srch-label">TripAdvisor Search</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://www.booking.com/searchresults.html?ss=Colombo+Court+Hotel" target="_blank"><span class="srch-icon">🏨</span><span class="srch-label">Booking.com Search</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://news.google.com/search?q=Colombo+Court+Hotel" target="_blank"><span class="srch-icon">📰</span><span class="srch-label">Google News Search</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://www.instagram.com/explore/search/keyword/?q=ColomboCourtHotel" target="_blank"><span class="srch-icon">📸</span><span class="srch-label">Instagram Search</span><span class="srch-arrow">↗</span></a>
+        </div>
+
+        <div class="card">
+          <div class="ctitle">Sentiment Score Guide</div>
+          <div class="score-guide">
+            <div class="sg-row"><span class="sg-range" style="color:#50D888;">80–100</span><span class="sg-label">Excellent — mostly 5 stars, very positive comments</span></div>
+            <div class="sg-row"><span class="sg-range" style="color:#A0D870;">65–79</span><span class="sg-label">Good — mostly positive with some minor issues</span></div>
+            <div class="sg-row"><span class="sg-range" style="color:#E8C060;">50–64</span><span class="sg-label">Average — mixed reviews, significant issues noted</span></div>
+            <div class="sg-row"><span class="sg-range" style="color:#FF8080;">Below 50</span><span class="sg-label">Poor — mostly negative, urgent action needed</span></div>
+          </div>
+          <div style="font-size:11px;color:#B0B0C0;line-height:1.7;margin-top:8px;"><strong style="color:#E8C060;">How to calculate:</strong> Count your reviews from this month. If 7 out of 10 are positive (4-5 stars) = 70% positive = score of ~70. If star rating is 4.2/5.0 = multiply by 20 = score of 84.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card rl">
+          <div class="ctitle">Enter Brand Data</div>
+          <div class="irow">
+            <div class="igrp">
+              <label class="lbl">Sentiment Score (0-100)</label>
+              <input type="number" class="ifield" id="b-sent" min="0" max="100" placeholder="e.g. 74">
+            </div>
+            <div class="igrp">
+              <label class="lbl">New Reviews This Month</label>
+              <input type="number" class="ifield" id="b-rev" placeholder="e.g. 12">
+            </div>
+          </div>
+          <div class="irow">
+            <div class="igrp">
+              <label class="lbl">Positive Reviews %</label>
+              <input type="number" class="ifield" id="b-pos" min="0" max="100" placeholder="e.g. 75">
+            </div>
+            <div class="igrp">
+              <label class="lbl">Negative Reviews %</label>
+              <input type="number" class="ifield" id="b-neg" min="0" max="100" placeholder="e.g. 15">
+            </div>
+          </div>
+          <div class="irow">
+            <div class="igrp">
+              <label class="lbl">Google Star Rating</label>
+              <input type="number" class="ifield" id="b-stars" min="1" max="5" step="0.1" placeholder="e.g. 4.2">
+            </div>
+            <div class="igrp">
+              <label class="lbl">Avg TripAdvisor Rating</label>
+              <input type="number" class="ifield" id="b-ta" min="1" max="5" step="0.1" placeholder="e.g. 4.0">
             </div>
           </div>
           <div class="igrp">
-            <label class="lbl">Estimated Online Mentions</label>
-            <input type="number" class="ifield" id="ci-ment" placeholder="e.g. 45" style="max-width:120px;">
-          </div>
-        </div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Positive % </label>
-            <input type="number" class="ifield" id="ci-pos" min="0" max="100" placeholder="60">
+            <label class="lbl">What People Are Saying (paste review snippets or summarise)</label>
+            <textarea class="tfield" id="b-reviews" placeholder="e.g. Multiple guests praised the rooftop bar views. 3 reviews complained about slow pool service. 2 mentioned the spa was excellent. One negative review about room cleanliness..."></textarea>
           </div>
           <div class="igrp">
-            <label class="lbl">Negative %</label>
-            <input type="number" class="ifield" id="ci-neg" min="0" max="100" placeholder="15">
+            <label class="lbl">Your Social Media This Month (Instagram, Facebook, TikTok)</label>
+            <textarea class="tfield" id="b-social" placeholder="e.g. Instagram: 847 followers, best post got 234 likes (poolside reel). Facebook: 2 posts, low engagement. TikTok: 1 video, 1,200 views..."></textarea>
           </div>
+          <button class="btn br" style="width:100%;justify-content:center;" onclick="goStep(2)">Next → Reviews & Mentions</button>
         </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">New Reviews / Comments Seen Today</label>
-          <textarea class="tfield" id="ci-reviews" style="min-height:80px;" placeholder="Paste or summarise any new Google reviews, TripAdvisor comments, or social mentions you saw today…"></textarea>
-        </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Platform Activity Notes</label>
-          <textarea class="tfield" id="ci-social" style="min-height:70px;" placeholder="Instagram engagement, Facebook reach, TikTok views, LinkedIn activity — anything you noticed…"></textarea>
-        </div>
-      </div>
-
-      <!-- Competitor check-in -->
-      <div class="card">
-        <div class="ctitle">Competitor Activity Today</div>
-        <div id="ci-comp-fields"></div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">General Competitor Notes</label>
-          <textarea class="tfield" id="ci-comp-notes" style="min-height:70px;" placeholder="Any promotions, events, or social activity you spotted from competitors today…"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <!-- City / trends -->
-      <div class="card">
-        <div class="ctitle">City & Trends Observations</div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Colombo Trends Noticed</label>
-          <textarea class="tfield" id="ci-trends" style="min-height:80px;" placeholder="What's trending in Colombo today? Hashtags, events, topics, seasonal activity, what people are talking about…"></textarea>
-        </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Upcoming Events / Calendar Notes</label>
-          <textarea class="tfield" id="ci-events" style="min-height:60px;" placeholder="Any upcoming events, holidays, or Colombo calendar moments to note…"></textarea>
-        </div>
-      </div>
-
-      <!-- Additional notes -->
-      <div class="card">
-        <div class="ctitle">Additional Observations</div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Property Notes (Hotel / Poolside / Cloud Café)</label>
-          <textarea class="tfield" id="ci-property" style="min-height:80px;" placeholder="Footfall observations, guest feedback, anything worth recording about each property today…"></textarea>
-        </div>
-        <div class="igrp" style="margin-bottom:12px;">
-          <label class="lbl">Date</label>
-          <input type="date" class="ifield" id="ci-date" style="max-width:180px;">
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="card gl">
-        <div class="ctitle">Step 2 — Get AI Analysis</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">
-          Click the button below to copy all your check-in data as a ready-made prompt. Paste it into <strong style="color:#E0E0F0;">Claude.ai</strong> (this chat) to get your AI analysis. Then paste the response back in Step 3.
-        </p>
-        <button class="cfc-btn" onclick="copyCheckinForClaude()">
-          <span class="cfc-icon">◈</span> Copy Today's Check-in for Claude.ai
-        </button>
-        <div id="cfc-copied" style="display:none;font-size:11px;color:var(--green);margin-top:6px;">✓ Copied! Paste it into Claude.ai chat now.</div>
-      </div>
-
-      <!-- Step 3 paste back -->
-      <div class="card">
-        <div class="ctitle">Step 3 — Paste AI Response Back</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:10px;line-height:1.7;">After getting the analysis from Claude.ai, paste the full response here and save it.</p>
-        <div class="pasteback">
-          <div class="pb-label">◈ Claude.ai Analysis Response</div>
-          <textarea class="pb-area" id="ci-ai-response" placeholder="Paste Claude.ai's analysis response here…"></textarea>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-          <button class="btn br" onclick="saveCheckin()">💾 Save Today's Check-in</button>
-          <button class="btn bo bsm" onclick="clearCheckin()">Clear</button>
-        </div>
-        <div id="ci-save-msg" style="font-size:11px;color:var(--green);margin-top:6px;display:none;"></div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════ BRAND ══════════════════════ -->
-<div class="page" id="page-brand">
-  <div class="phdr">
-    <div><div class="ptitle">Brand Intelligence</div><div class="psub">Monitor & analyse Colombo Court's online presence</div></div>
-  </div>
-  <div class="gsb">
-    <div>
-      <div class="card rl">
-        <div class="ctitle">What to Search / Observe</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">
-          Search these sources for Colombo Court mentions, then paste what you find below for tracking.
-        </p>
-        <div class="tcloud" style="margin-bottom:12px;">
-          <span class="ttag">Google Reviews</span>
-          <span class="ttag">TripAdvisor</span>
-          <span class="ttag">Booking.com</span>
-          <span class="ttag">Google News</span>
-          <span class="ttag">Travel Blogs</span>
-          <span class="ttag">Instagram Tags</span>
-          <span class="ttag">Facebook Mentions</span>
+  <!-- ── STEP 2: Reviews ── -->
+  <div class="wstep" id="step2">
+    <div class="step-box">
+      <div class="step-title">Step 2 — Reviews & Online Mentions</div>
+      <div class="step-desc">Paste any specific reviews or mentions you found that you want the AI to analyse in depth. Also use the Perplexity prompt to find what people are saying about your hotel online.</div>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card bl">
+          <div class="ctitle">Perplexity AI Prompt — Copy & Use</div>
+          <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Copy this prompt, paste it into <strong style="color:#7EB0E8;">Perplexity.ai</strong> (free at perplexity.ai), and paste the response back on the right.</p>
+          <button class="pxbtn" onclick="copyPerplexityBrand()"><span>🔎</span> Copy Perplexity Prompt — Brand Research</button>
+          <div id="px-brand-copied" style="display:none;font-size:11px;color:#50D888;margin-top:6px;">✓ Copied! Paste into perplexity.ai</div>
         </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Source / Platform</label>
-          <select class="sfield" id="br-source">
-            <option>Google Reviews</option><option>TripAdvisor</option>
-            <option>Booking.com</option><option>Instagram</option>
-            <option>Facebook</option><option>TikTok</option>
-            <option>News / Blog Article</option><option>Other</option>
-          </select>
+        <div class="card">
+          <div class="ctitle">Quick Search Links</div>
+          <a class="srch-btn" href="https://www.google.com/search?q=%22Colombo+Court+Hotel%22+review+2025+2026" target="_blank"><span class="srch-icon">🔍</span><span class="srch-label">Recent Google mentions</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://www.google.com/search?q=Colombo+Court+Hotel+blog+article" target="_blank"><span class="srch-icon">📝</span><span class="srch-label">Blog & article mentions</span><span class="srch-arrow">↗</span></a>
+          <a class="srch-btn" href="https://www.tiktok.com/search?q=Colombo+Court+Hotel" target="_blank"><span class="srch-icon">🎵</span><span class="srch-label">TikTok mentions</span><span class="srch-arrow">↗</span></a>
         </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">Property Focus</label>
-          <select class="sfield" id="br-prop">
-            <option>Colombo Court Hotel (Overall)</option>
-            <option>Poolside Restaurant</option>
-            <option>Cloud Café & Bar</option>
-            <option>Spa & Wellness</option>
-            <option>Hotel Rooms & Stay</option>
-          </select>
-        </div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Sentiment Score</label>
-            <input type="number" class="ifield" id="br-sent" min="0" max="100" placeholder="72">
-          </div>
-          <div class="igrp">
-            <label class="lbl">No. of Mentions</label>
-            <input type="number" class="ifield" id="br-ment" placeholder="28">
+      </div>
+      <div>
+        <div class="card">
+          <div class="ctitle">Paste Perplexity Response / Key Review Findings</div>
+          <div class="pasteback">
+            <div class="pb-lbl">◈ Perplexity / Research Response</div>
+            <textarea class="pb-area" id="rev-paste" placeholder="Paste what Perplexity found, or summarise the key reviews and mentions you read this month..."></textarea>
           </div>
         </div>
-        <div class="igrp" style="margin-bottom:12px;">
-          <label class="lbl">Paste Content / Reviews Found</label>
-          <textarea class="tfield" id="br-content" placeholder="Paste reviews, comments, article snippets, or describe what you found…"></textarea>
+        <div class="card">
+          <div class="ctitle">Cloud Café & Bar — Specific Notes</div>
+          <textarea class="tfield" id="b-cloudcafe" placeholder="Any reviews or mentions specific to Cloud Café & Bar rooftop? What are people saying?"></textarea>
         </div>
-        <button class="cfc-btn" onclick="copyBrandForClaude()">
-          <span class="cfc-icon">◈</span> Copy Brand Data for Claude.ai Analysis
-        </button>
-        <div id="br-copied" style="display:none;font-size:11px;color:var(--green);margin-top:6px;">✓ Copied! Paste into Claude.ai.</div>
+        <div class="card">
+          <div class="ctitle">Poolside Restaurant — Specific Notes</div>
+          <textarea class="tfield" id="b-poolside" placeholder="Any reviews or mentions specific to the Poolside Restaurant?"></textarea>
+        </div>
+        <button class="btn br" style="width:100%;justify-content:center;" onclick="goStep(3)">Next → Competitors</button>
       </div>
     </div>
-    <div>
-      <div class="card">
-        <div class="ctitle">Paste AI Analysis Back</div>
-        <div class="pasteback">
-          <div class="pb-label">◈ Brand Intelligence Response from Claude.ai</div>
-          <textarea class="pb-area" id="br-ai-resp" placeholder="Paste Claude.ai's brand analysis here…"></textarea>
+  </div>
+
+  <!-- ── STEP 3: Competitors ── -->
+  <div class="wstep" id="step3">
+    <div class="step-box">
+      <div class="step-title">Step 3 — Competitor Check</div>
+      <div class="step-desc">For each competitor, open their Instagram/Facebook, note what they promoted this month, and enter a rough sentiment score based on what you see in their reviews. Use the Perplexity prompts for deeper research.</div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <div class="card bl">
+          <div class="ctitle">Perplexity AI Prompts — Competitors</div>
+          <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Run these one at a time in Perplexity.ai for deep competitor research.</p>
+          <div id="compPerplexityBtns"></div>
         </div>
-        <div style="display:flex;gap:7px;margin-top:10px;">
-          <button class="btn br bsm" onclick="saveBrandAnalysis()">Save Analysis</button>
-          <button class="btn bo bsm" onclick="copyEl('br-ai-resp')">Copy</button>
+        <div class="card">
+          <div class="ctitle">Competitor Search Links</div>
+          <div id="compSearchLinks"></div>
         </div>
       </div>
-      <div class="outbox" id="br-outbox">
-        <div class="ob-hdr">
-          <div class="ob-lbl">◈ Saved Brand Analysis</div>
-          <button class="btn bo bsm" onclick="copyEl('br-ob-body')">Copy</button>
+      <div>
+        <div class="card rl">
+          <div class="ctitle">Enter Competitor Data</div>
+          <div class="igrp">
+            <label class="lbl">Select Competitor</label>
+            <select class="sfield" id="cp-sel"></select>
+          </div>
+          <div class="irow">
+            <div class="igrp">
+              <label class="lbl">Their Sentiment Score (0-100)</label>
+              <input type="number" class="ifield" id="cp-sent" min="0" max="100" placeholder="e.g. 68">
+            </div>
+            <div class="igrp">
+              <label class="lbl">Estimated Mentions</label>
+              <input type="number" class="ifield" id="cp-ment" placeholder="e.g. 45">
+            </div>
+          </div>
+          <div class="irow">
+            <div class="igrp">
+              <label class="lbl">Activity Level (1-10)</label>
+              <input type="number" class="ifield" id="cp-act" min="1" max="10" placeholder="e.g. 7">
+            </div>
+            <div class="igrp">
+              <label class="lbl">Star Rating (if visible)</label>
+              <input type="number" class="ifield" id="cp-stars" min="1" max="5" step="0.1" placeholder="e.g. 4.1">
+            </div>
+          </div>
+          <div class="igrp">
+            <label class="lbl">What They Promoted This Month</label>
+            <textarea class="tfield" id="cp-promo" placeholder="e.g. Ran a Sunday rooftop DJ event, 2-for-1 cocktails promotion on Instagram, launched a new menu..."></textarea>
+          </div>
+          <div class="igrp">
+            <label class="lbl">Perplexity Research Findings (paste here)</label>
+            <textarea class="tfield" id="cp-px" placeholder="Paste Perplexity response about this competitor here..."></textarea>
+          </div>
+          <button class="btn bgr bsm" style="width:100%;justify-content:center;" onclick="saveCompData()">Save This Competitor's Data</button>
+          <div id="cp-save-msg" style="display:none;font-size:12px;color:#50D888;margin-top:6px;"></div>
         </div>
-        <div class="ob-body" id="br-ob-body"></div>
+        <div class="card" style="overflow-x:auto;">
+          <div class="ctitle">Competitor Data Entered This Month</div>
+          <table class="tbl">
+            <thead><tr><th>Competitor</th><th>Sentiment</th><th>Activity</th><th>Stars</th><th>Status</th></tr></thead>
+            <tbody id="cp-table-body"><tr><td colspan="5" style="color:#A0A0B8;text-align:center;padding:16px;">No data entered yet.</td></tr></tbody>
+          </table>
+        </div>
+        <button class="btn br" style="width:100%;justify-content:center;" onclick="goStep(4)">Next → City Trends</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: Trends ── -->
+  <div class="wstep" id="step4">
+    <div class="step-box">
+      <div class="step-title">Step 4 — Colombo City Trends</div>
+      <div class="step-desc">What's trending in Colombo this month? Use the Perplexity prompts below for research, then note what you've personally observed on social media.</div>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card bl">
+          <div class="ctitle">Perplexity AI Prompts — City Trends</div>
+          <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Run all of these in Perplexity.ai and paste responses on the right.</p>
+          <button class="pxbtn" style="margin-bottom:8px;" onclick="copyPx('F&B dining trends Colombo Sri Lanka this month 2026')"><span>🍽️</span> F&B & Dining Trends Colombo</button>
+          <button class="pxbtn" style="margin-bottom:8px;" onclick="copyPx('rooftop bars nightlife trending Colombo 2026')"><span>🌃</span> Nightlife & Rooftop Trends</button>
+          <button class="pxbtn" style="margin-bottom:8px;" onclick="copyPx('hotel hospitality tourism trends Sri Lanka Colombo 2026')"><span>🏨</span> Hospitality & Tourism Trends</button>
+          <button class="pxbtn" onclick="copyPx('upcoming events Colombo Sri Lanka next month 2026')"><span>📅</span> Upcoming Colombo Events</button>
+          <div id="px-trend-copied" style="display:none;font-size:11px;color:#50D888;margin-top:6px;">✓ Copied!</div>
+        </div>
+        <div class="card">
+          <div class="ctitle">Upcoming Calendar Moments</div>
+          <div class="tcloud" id="calTags">
+            <span class="ttag">Vesak Season</span><span class="ttag">Avurudu / New Year</span>
+            <span class="ttag">School Holidays</span><span class="ttag">Cricket Season</span>
+            <span class="ttag">Christmas / NYE</span><span class="ttag">Valentine's Day</span>
+            <span class="ttag">MICE Season</span><span class="ttag">Ramadan</span>
+            <span class="ttag">Independence Day</span><span class="ttag">Fashion Week</span>
+            <span class="ttag">Marathon Events</span><span class="ttag">Long Weekend</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ctitle">Paste Trend Research Findings</div>
+          <div class="pasteback">
+            <div class="pb-lbl">◈ Perplexity Trend Responses</div>
+            <textarea class="pb-area" id="tr-paste" placeholder="Paste all Perplexity trend research findings here (combine multiple responses)..."></textarea>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ctitle">What You Personally Observed</div>
+          <div class="igrp">
+            <label class="lbl">Trending Topics / Hashtags You Noticed</label>
+            <textarea class="tfield" id="tr-obs" style="min-height:70px;" placeholder="e.g. #ColomboSunset trending, lots of brunch content, Galle Face area very active on weekends..."></textarea>
+          </div>
+          <div class="igrp">
+            <label class="lbl">Key Events Next Month to Plan Around</label>
+            <textarea class="tfield" id="tr-events" style="min-height:70px;" placeholder="e.g. School holidays 10th-20th, Colombo Jazz Festival on 15th, long weekend on 22nd..."></textarea>
+          </div>
+        </div>
+        <button class="btn br" style="width:100%;justify-content:center;" onclick="goStep(5)">Next → Build Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 5: Build Report ── -->
+  <div class="wstep" id="step5">
+    <div class="step-box">
+      <div class="step-title">Step 5 — Build Your Monthly Report</div>
+      <div class="step-desc">All your data is ready. Click the button below to copy the complete master prompt. Paste it into Claude.ai to get your full monthly report.</div>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card gl">
+          <div class="ctitle">Master Claude.ai Prompt</div>
+          <p style="font-size:13px;color:#C0C0D0;margin-bottom:14px;line-height:1.7;">This packages everything you've entered into one powerful prompt. Paste it into Claude.ai to get your complete monthly intelligence report.</p>
+          <button class="cfc" onclick="buildMasterPrompt()"><span class="cfc-icon">◈</span> Copy Master Prompt for Claude.ai</button>
+          <div id="master-copied" style="display:none;font-size:12px;color:#50D888;margin-top:8px;">✓ Copied! Now paste into Claude.ai chat.</div>
+        </div>
+        <div class="card bl">
+          <div class="ctitle">Content Calendar Prompt</div>
+          <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">After getting your report, use this to generate next month's content plan for all 4 platforms.</p>
+          <button class="cfc" style="border-color:rgba(74,128,192,0.5);background:rgba(74,128,192,0.07);color:#7EB0E8;" onclick="buildContentPrompt()"><span class="cfc-icon">📅</span> Copy Content Calendar Prompt</button>
+          <div id="content-copied" style="display:none;font-size:12px;color:#50D888;margin-top:8px;">✓ Copied!</div>
+        </div>
+        <div class="card">
+          <div class="ctitle">Review Month</div>
+          <div class="igrp">
+            <label class="lbl">Month Being Reviewed</label>
+            <input type="month" class="ifield" id="review-month" style="max-width:200px;">
+          </div>
+          <div class="igrp">
+            <label class="lbl">Additional Notes for Report</label>
+            <textarea class="tfield" id="extra-notes" style="min-height:70px;" placeholder="Anything else — events that happened, campaigns run, staffing changes, external factors..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ctitle">Paste Claude.ai Monthly Report Response</div>
+          <div class="pasteback">
+            <div class="pb-lbl">◈ Monthly Intelligence Report</div>
+            <textarea class="pb-area" id="report-paste" style="min-height:280px;" placeholder="Paste Claude.ai's full monthly report response here..."></textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            <button class="btn br" onclick="saveMonthlyReview()">💾 Save This Month's Review</button>
+            <button class="btn bo bsm" onclick="copyEl('report-paste')">Copy</button>
+          </div>
+          <div id="review-save-msg" style="display:none;font-size:12px;color:#50D888;margin-top:8px;"></div>
+        </div>
+        <div class="card">
+          <div class="ctitle">Paste Content Calendar Response</div>
+          <div class="pasteback">
+            <div class="pb-lbl">◈ Content Calendar</div>
+            <textarea class="pb-area" id="content-paste" style="min-height:160px;" placeholder="Paste Claude.ai's content calendar here..."></textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn bg bsm" onclick="saveContent()">Save Content Plan</button>
+            <button class="btn bo bsm" onclick="copyEl('content-paste')">Copy</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -642,356 +661,102 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
 <!-- ══════════════════════ COMPETITORS ══════════════════════ -->
 <div class="page" id="page-competitors">
   <div class="phdr">
-    <div><div class="ptitle">Competitor Intelligence</div><div class="psub">Track your competitive set — enter data, get AI strategy</div></div>
+    <div><div class="ptitle">Competitor Watchlist</div><div class="psub">Manage your competitive set — add or remove anytime</div></div>
     <div class="pacts">
       <button class="btn bo bsm" onclick="openM('addCompM')">+ Add Competitor</button>
-      <button class="btn br bsm" onclick="copyAllCompsForClaude()">◈ Copy All for Claude.ai</button>
     </div>
   </div>
-  <div class="gsb">
-    <div>
-      <div class="card">
-        <div class="ctitle">Watchlist</div>
-        <div id="compList"></div>
-      </div>
-      <!-- Individual competitor entry -->
-      <div class="card">
-        <div class="ctitle">Enter Competitor Data</div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Competitor</label>
-            <select class="sfield" id="cp-name"></select>
-          </div>
-          <div class="igrp">
-            <label class="lbl">Sentiment Score</label>
-            <input type="number" class="ifield" id="cp-sent" min="0" max="100" placeholder="65">
-          </div>
-        </div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Mentions (estimated)</label>
-            <input type="number" class="ifield" id="cp-ment" placeholder="80">
-          </div>
-          <div class="igrp">
-            <label class="lbl">Activity Level (1-10)</label>
-            <input type="number" class="ifield" id="cp-act" min="1" max="10" placeholder="6">
-          </div>
-        </div>
-        <div class="igrp" style="margin-bottom:10px;">
-          <label class="lbl">What They're Doing (posts, promos, events)</label>
-          <textarea class="tfield" id="cp-activity" style="min-height:80px;" placeholder="Paste or describe their latest social posts, promotions, events, pricing…"></textarea>
-        </div>
-        <button class="btn br bsm" style="width:100%;justify-content:center;" onclick="saveCompData()">Save Competitor Data</button>
-        <div id="cp-saved-msg" style="font-size:11px;color:var(--green);margin-top:6px;display:none;"></div>
-      </div>
-    </div>
-    <div>
-      <!-- Comparison table -->
-      <div class="card" style="overflow-x:auto;">
-        <div class="ctitle">Side-by-Side Comparison</div>
-        <table class="tbl" id="compTable">
-          <thead><tr>
-            <th>Property</th><th>Sentiment</th><th>Mentions</th><th>Activity</th><th>Last Updated</th><th>Threat</th>
-          </tr></thead>
-          <tbody id="compTableBody">
-            <tr><td colspan="6" style="color:#A0A0B8;text-align:center;padding:16px;">Enter competitor data to populate.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- Copy for Claude -->
-      <div class="card gl">
-        <div class="ctitle">AI Competitive Analysis</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:10px;line-height:1.7;">Copy all competitor data to get counter-strategies and gap analysis from Claude.ai.</p>
-        <button class="cfc-btn" onclick="copyAllCompsForClaude()">
-          <span class="cfc-icon">◈</span> Copy All Competitor Data for Claude.ai
-        </button>
-        <div class="pasteback" style="margin-top:10px;">
-          <div class="pb-label">◈ Paste Competitive Analysis from Claude.ai</div>
-          <textarea class="pb-area" id="cp-ai-resp" placeholder="Paste Claude.ai's competitive intelligence response here…"></textarea>
-        </div>
-        <div style="display:flex;gap:7px;margin-top:8px;">
-          <button class="btn br bsm" onclick="saveCompAnalysis()">Save Analysis</button>
-          <button class="btn bo bsm" onclick="copyEl('cp-ai-resp')">Copy</button>
-        </div>
-      </div>
-      <div class="outbox" id="cp-outbox">
-        <div class="ob-hdr">
-          <div class="ob-lbl">◈ Saved Competitor Analysis</div>
-          <button class="btn bo bsm" onclick="copyEl('cp-ob-body')">Copy</button>
-        </div>
-        <div class="ob-body" id="cp-ob-body"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- ══════════════════════ COMPARE ══════════════════════ -->
-<div class="page" id="page-compare">
-  <div class="phdr">
-    <div><div class="ptitle">Comparison Analysis</div><div class="psub">Compare any 2 brands or time periods side by side</div></div>
-  </div>
-  <div class="card rl">
-    <div class="ctitle">Select Brands to Compare</div>
-    <div class="vs-row">
-      <div class="igrp" style="min-width:180px;">
-        <label class="lbl">Brand A</label>
-        <select class="sfield" id="cmpA"></select>
-      </div>
-      <div style="font-size:18px;color:#A0A0B8;padding-bottom:6px;align-self:flex-end;">vs</div>
-      <div class="igrp" style="min-width:180px;">
-        <label class="lbl">Brand B</label>
-        <select class="sfield" id="cmpB"></select>
-      </div>
-      <div class="igrp" style="min-width:130px;">
-        <label class="lbl">Date Range</label>
-        <select class="sfield" id="cmpRange">
-          <option value="7">Last 7 days</option>
-          <option value="14">Last 14 days</option>
-          <option value="30" selected>Last 30 days</option>
-          <option value="999">All time</option>
-        </select>
-      </div>
-      <button class="btn br" style="align-self:flex-end;" onclick="runCompare()">Compare Now</button>
-      <button class="cfc-btn" style="align-self:flex-end;flex:0;" onclick="copyCompareForClaude()">◈ Copy for Claude.ai</button>
-    </div>
-  </div>
-  <div class="g2" style="margin-bottom:12px;">
-    <div class="card">
-      <div class="ctitle">Sentiment Trend Comparison</div>
-      <div class="cwrap-lg"><canvas id="cCmpSent"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctitle">Mention Volume Comparison</div>
-      <div class="cwrap-lg"><canvas id="cCmpMent"></canvas></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ctitle">Score Snapshot</div>
-    <div class="cwrap"><canvas id="cCmpSnap"></canvas></div>
-  </div>
-  <div class="card gl" style="margin-top:4px;">
-    <div class="ctitle">Paste Comparison Analysis from Claude.ai</div>
-    <div class="pasteback">
-      <div class="pb-label">◈ Comparison Intelligence</div>
-      <textarea class="pb-area" id="cmp-ai-resp" placeholder="Copy the comparison data for Claude.ai using the button above, then paste the response here…"></textarea>
-    </div>
-    <div style="display:flex;gap:7px;margin-top:8px;">
-      <button class="btn br bsm" onclick="saveOutput('compare','cmp-ai-resp')">Save</button>
-      <button class="btn bo bsm" onclick="copyEl('cmp-ai-resp')">Copy</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════ TRENDS ══════════════════════ -->
-<div class="page" id="page-trends">
-  <div class="phdr">
-    <div><div class="ptitle">City Trends Monitor</div><div class="psub">Track Colombo trends — map them to your opportunities</div></div>
-  </div>
-  <div class="g2" style="margin-bottom:12px;">
-    <div class="card">
-      <div class="ctitle">Trend Category Focus</div>
-      <div class="tcloud" id="tCats">
-        <span class="ttag on" data-cat="F&B and dining">F&B Trends</span>
-        <span class="ttag" data-cat="rooftop bars and nightlife">Nightlife / Rooftop</span>
-        <span class="ttag" data-cat="boutique hotels">Hotels</span>
-        <span class="ttag" data-cat="events and entertainment">Events</span>
-        <span class="ttag" data-cat="tourism and visitors">Tourism</span>
-        <span class="ttag" data-cat="lifestyle and wellness">Wellness</span>
-        <span class="ttag" data-cat="social media marketing">Social Media</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ctitle">Colombo Calendar</div>
-      <div class="tcloud">
-        <span class="ttag">Vesak Season</span><span class="ttag">Avurudu / New Year</span>
-        <span class="ttag">Fashion Week</span><span class="ttag">School Holidays</span>
-        <span class="ttag">Cricket Season</span><span class="ttag">Christmas / NYE</span>
-        <span class="ttag">Valentine's Day</span><span class="ttag">MICE Season</span>
-        <span class="ttag">Ramadan</span><span class="ttag">Independence Day</span>
-        <span class="ttag">Marathon Events</span><span class="ttag">Art Biennale</span>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ctitle">Trend Observations</div>
-    <div class="igrp" style="margin-bottom:10px;">
-      <label class="lbl">What Trends Have You Noticed in Colombo?</label>
-      <textarea class="tfield" id="tr-obs" placeholder="Describe trending topics, hashtags, events, viral content, consumer behaviour shifts you've observed in Colombo's hospitality and lifestyle scene…"></textarea>
-    </div>
-    <div class="igrp" style="margin-bottom:12px;">
-      <label class="lbl">Your Specific Question for Claude.ai (optional)</label>
-      <textarea class="tfield" id="tr-q" style="min-height:60px;" placeholder="e.g. What F&B trends should Cloud Café & Bar tap into this month to attract the 25-35 Colombo crowd on weekends?"></textarea>
-    </div>
-    <button class="cfc-btn" onclick="copyTrendsForClaude()">
-      <span class="cfc-icon">◈</span> Copy Trend Data for Claude.ai Analysis
-    </button>
-    <div id="tr-copied" style="display:none;font-size:11px;color:var(--green);margin-top:6px;">✓ Copied! Paste into Claude.ai.</div>
-  </div>
-  <div class="card gl">
-    <div class="ctitle">Paste Trend Analysis from Claude.ai</div>
-    <div class="pasteback">
-      <div class="pb-label">◈ Trend Intelligence</div>
-      <textarea class="pb-area" id="tr-ai-resp" placeholder="Paste Claude.ai's trend analysis and opportunities here…"></textarea>
-    </div>
-    <div style="display:flex;gap:7px;margin-top:8px;">
-      <button class="btn br bsm" onclick="saveTrendAnalysis()">Save Analysis</button>
-      <button class="btn bo bsm" onclick="copyEl('tr-ai-resp')">Copy</button>
-    </div>
-    <div id="tr-saved-msg" style="font-size:11px;color:var(--green);margin-top:6px;display:none;"></div>
-  </div>
-</div>
-
-<!-- ══════════════════════ CONTENT ══════════════════════ -->
-<div class="page" id="page-content">
-  <div class="phdr">
-    <div><div class="ptitle">Content Advisor</div><div class="psub">Generate platform-specific content via Claude.ai — Instagram · Facebook · TikTok · LinkedIn</div></div>
-  </div>
-  <div class="gsb">
-    <div>
-      <div class="card gl">
-        <div class="ctitle">Strategy Brief (Saved Permanently)</div>
-        <p style="font-size:11px;color:#A0A0B8;margin-bottom:8px;">AI references this in every content request. Update monthly.</p>
-        <textarea class="tfield" id="stratInput" placeholder="e.g.&#10;Focus: Cloud Café weekends + F&B footfall&#10;April push: Spa packages&#10;No paid ads — organic only&#10;Brand voice: sophisticated but approachable&#10;Target: Colombo young professionals 25-35 + hotel guests&#10;Avoid: generic tourist content"></textarea>
-        <button class="btn bg bsm" style="margin-top:8px;width:100%;justify-content:center;" onclick="saveStrat()">💾 Save Strategy Brief</button>
-        <div id="strat-saved" style="font-size:11px;color:var(--green);margin-top:5px;display:none;">✓ Saved</div>
-      </div>
-      <div class="card">
-        <div class="ctitle">Content Brief</div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Goal</label>
-            <select class="sfield" id="cnt-goal">
-              <option>Drive poolside restaurant footfall</option>
-              <option>Promote Cloud Café & Bar rooftop</option>
-              <option>Increase hotel bookings</option>
-              <option>Build brand awareness</option>
-              <option>Promote spa services</option>
-              <option>Promote a specific event / offer</option>
-              <option>Grow social media following</option>
-              <option>Corporate / MICE outreach</option>
-            </select>
-          </div>
-          <div class="igrp">
-            <label class="lbl">Target Audience</label>
-            <select class="sfield" id="cnt-aud">
-              <option>Young Colombo professionals (25-35)</option>
-              <option>Families & local residents</option>
-              <option>Tourists & visitors to Sri Lanka</option>
-              <option>Corporate / MICE clients</option>
-              <option>Colombo expats</option>
-              <option>F&B enthusiasts</option>
-              <option>Luxury & lifestyle seekers</option>
-            </select>
-          </div>
-        </div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Timeframe / Occasion</label>
-            <input type="text" class="ifield" id="cnt-occ" placeholder="e.g. This weekend, Vesak week">
-          </div>
-          <div class="igrp">
-            <label class="lbl">Include Latest Trends</label>
-            <select class="sfield" id="cnt-trends">
-              <option value="yes">Yes — include saved trend data</option>
-              <option value="no">No — general strategy only</option>
-            </select>
-          </div>
-        </div>
-        <div class="igrp" style="margin-bottom:12px;">
-          <label class="lbl">Extra Context (offers, assets, constraints)</label>
-          <textarea class="tfield" id="cnt-ctx" style="min-height:60px;" placeholder="New menu launch, photographer available Saturday, specific offer details…"></textarea>
-        </div>
-        <button class="cfc-btn" onclick="copyContentForClaude()">
-          <span class="cfc-icon">◈</span> Copy Content Brief for Claude.ai
-        </button>
-        <div id="cnt-copied" style="display:none;font-size:11px;color:var(--green);margin-top:6px;">✓ Copied! Paste into Claude.ai.</div>
-      </div>
-    </div>
-    <div>
-      <div class="ptabs">
-        <button class="ptab on" data-pf="all">All Platforms</button>
-        <button class="ptab" data-pf="instagram">📸 Instagram</button>
-        <button class="ptab" data-pf="facebook">📘 Facebook</button>
-        <button class="ptab" data-pf="tiktok">🎵 TikTok</button>
-        <button class="ptab" data-pf="linkedin">💼 LinkedIn</button>
-      </div>
-      <div class="card" style="padding-bottom:0;">
-        <div class="ctitle">Paste Content Strategy from Claude.ai</div>
-        <div class="pasteback">
-          <div class="pb-label">◈ Content Strategy Output</div>
-          <textarea class="pb-area" id="cnt-ai-resp" style="min-height:380px;" placeholder="After pasting your brief into Claude.ai, copy the full response here. Use the platform tabs above to filter by platform."></textarea>
-        </div>
-        <div style="display:flex;gap:7px;margin-top:8px;margin-bottom:14px;flex-wrap:wrap;">
-          <button class="btn br bsm" onclick="saveContentStrategy()">Save Strategy</button>
-          <button class="btn bo bsm" onclick="copyEl('cnt-ai-resp')">Copy</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════ REPORTS ══════════════════════ -->
-<div class="page" id="page-reports">
-  <div class="phdr">
-    <div><div class="ptitle">Report Builder</div><div class="psub">Daily snapshots & monthly intelligence reports — export for management</div></div>
-  </div>
   <div class="g2">
     <div>
-      <div class="card rl">
-        <div class="ctitle">Daily Snapshot Report</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Packages today's check-in data into a report prompt for Claude.ai.</p>
-        <button class="cfc-btn" onclick="copyDailyReportForClaude()">
-          <span class="cfc-icon">◈</span> Copy Today's Data for Daily Report
-        </button>
-      </div>
       <div class="card">
-        <div class="ctitle">Monthly Intelligence Report</div>
-        <div class="irow">
-          <div class="igrp">
-            <label class="lbl">Month</label>
-            <select class="sfield" id="rpt-month"></select>
-          </div>
-          <div class="igrp">
-            <label class="lbl">Focus</label>
-            <select class="sfield" id="rpt-focus">
-              <option>All properties</option>
-              <option>Cloud Café & Bar only</option>
-              <option>Hotel rooms / occupancy</option>
-              <option>F&B (poolside + Cloud Café)</option>
-            </select>
-          </div>
-        </div>
-        <div class="igrp" style="margin-bottom:12px;">
-          <label class="lbl">Additional Notes</label>
-          <textarea class="tfield" id="rpt-notes" style="min-height:80px;" placeholder="Campaigns run, events held, staffing changes, external factors…"></textarea>
-        </div>
-        <button class="cfc-btn" onclick="copyMonthlyReportForClaude()">
-          <span class="cfc-icon">◈</span> Copy Monthly Data for Claude.ai Report
-        </button>
+        <div class="ctitle">Current Watchlist</div>
+        <div id="compListFull"></div>
       </div>
     </div>
     <div>
-      <div class="card gl">
-        <div class="ctitle">Paste Report from Claude.ai</div>
-        <div class="pasteback">
-          <div class="pb-label">◈ Report Output</div>
-          <textarea class="pb-area" id="rpt-ai-resp" style="min-height:320px;" placeholder="Paste your Claude.ai generated report here…"></textarea>
+      <div class="card" style="overflow-x:auto;">
+        <div class="ctitle">Latest Month — Side by Side</div>
+        <table class="tbl">
+          <thead><tr><th>Property</th><th>Sentiment</th><th>Mentions</th><th>Activity</th><th>Stars</th><th>Threat</th></tr></thead>
+          <tbody id="fullCompTable"><tr><td colspan="6" style="color:#A0A0B8;text-align:center;padding:16px;">Enter monthly review data to populate.</td></tr></tbody>
+        </table>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ctitle">Sentiment Comparison</div>
+          <div class="cwrap"><canvas id="cCompSent"></canvas></div>
         </div>
-        <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap;">
-          <button class="btn br bsm" onclick="saveReport()">Save Report</button>
-          <button class="btn bo bsm" onclick="copyEl('rpt-ai-resp')">Copy</button>
-          <button class="btn bg bsm" onclick="exportHTMLReport()">↓ HTML Report</button>
-          <button class="btn bo bsm" onclick="exportExcel()">↓ Excel Backup</button>
+        <div class="card">
+          <div class="ctitle">Activity Level</div>
+          <div class="cwrap"><canvas id="cCompAct"></canvas></div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ REPORT ══════════════════════ -->
+<div class="page" id="page-report">
+  <div class="phdr">
+    <div><div class="ptitle">Monthly Report</div><div class="psub">View, export and share your intelligence reports</div></div>
+    <div class="pacts">
+      <button class="btn bg bsm" onclick="exportHTMLReport()">↓ HTML Report</button>
+      <button class="btn bo bsm" onclick="exportExcel()">↓ Excel Backup</button>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="ctitle">Select Month to View</div>
+        <div id="reportHistList" style="max-height:60vh;overflow-y:auto;">
+          <div style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">No reports saved yet.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="outbox on" id="reportView" style="margin-top:0;">
+        <div class="ob-hdr">
+          <div class="ob-lbl">◈ Report</div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn bo bsm" onclick="copyEl('reportBody')">Copy</button>
+            <button class="btn bg bsm" onclick="exportHTMLReport()">↓ HTML</button>
+          </div>
+        </div>
+        <div class="ob-body" id="reportBody" style="color:#A0A0B8;">Select a month from the list to view its report.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CONTENT PLAN ══════════════════════ -->
+<div class="page" id="page-content">
+  <div class="phdr">
+    <div><div class="ptitle">Content Plan</div><div class="psub">Monthly content calendar — Instagram · Facebook · TikTok · LinkedIn</div></div>
+  </div>
+
+  <div class="card gl">
+    <div class="ctitle">Strategy Brief — Saved Permanently</div>
+    <p style="font-size:12px;color:#C0C0D0;margin-bottom:10px;line-height:1.7;">The AI uses this every time you generate a content plan. Update it whenever your focus changes.</p>
+    <textarea class="tfield" id="stratInput" style="min-height:100px;" placeholder="e.g. Focus: Cloud Café weekends + F&B footfall. No paid ads — organic only. Brand voice: sophisticated but approachable. Target: Colombo young professionals 25-35 + hotel guests. Avoid generic tourist content."></textarea>
+    <button class="btn bg bsm" style="margin-top:8px;" onclick="saveStrat()">💾 Save Strategy Brief</button>
+    <div id="strat-msg" style="display:none;font-size:12px;color:#50D888;margin-top:6px;">✓ Saved — AI will use this in all content prompts.</div>
+  </div>
+
+  <div class="outbox on" id="contentView" style="margin-top:0;">
+    <div class="ob-hdr">
+      <div class="ob-lbl">◈ Latest Content Plan</div>
+      <button class="btn bo bsm" onclick="copyEl('contentBody')">Copy All</button>
+    </div>
+    <div class="ob-body" id="contentBody" style="color:#A0A0B8;">Complete Step 5 of the Monthly Review to generate your content plan.</div>
   </div>
 </div>
 
 <!-- ══════════════════════ HISTORY ══════════════════════ -->
 <div class="page" id="page-history">
   <div class="phdr">
-    <div><div class="ptitle">Scan History</div><div class="psub">Every daily check-in — click any date to review</div></div>
+    <div><div class="ptitle">Review History</div><div class="psub">All monthly reviews — click any month to load its full data</div></div>
     <div class="pacts">
       <button class="btn bo bsm" onclick="exportExcel()">↓ Download All (Excel)</button>
     </div>
@@ -999,7 +764,7 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
   <div class="gsb">
     <div>
       <div class="card">
-        <div class="ctitle">Check-in Records</div>
+        <div class="ctitle">Monthly Records</div>
         <div id="histList" style="max-height:72vh;overflow-y:auto;">
           <div style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">No history yet.</div>
         </div>
@@ -1007,15 +772,8 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
     </div>
     <div>
       <div class="card" id="histDetail">
-        <div class="ctitle">Selected Day</div>
-        <div id="histDetailBody" style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">Select a date from the list.</div>
-      </div>
-      <div class="outbox" id="hist-outbox">
-        <div class="ob-hdr">
-          <div class="ob-lbl">◈ AI Analysis for Selected Day</div>
-          <button class="btn bo bsm" onclick="copyEl('hist-ob-body')">Copy</button>
-        </div>
-        <div class="ob-body" id="hist-ob-body"></div>
+        <div class="ctitle">Selected Month Detail</div>
+        <div id="histDetailBody" style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">Select a month from the list.</div>
       </div>
     </div>
   </div>
@@ -1024,10 +782,10 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
 <!-- ══════════════════════ SAVED ══════════════════════ -->
 <div class="page" id="page-saved">
   <div class="phdr">
-    <div><div class="ptitle">Saved Insights</div><div class="psub">Your intelligence library</div></div>
+    <div><div class="ptitle">Saved Insights</div><div class="psub">All saved analyses and content plans</div></div>
     <div class="pacts">
-      <button class="btn bo bsm" onclick="exportExcel()">↓ Export All (Excel)</button>
-      <button class="btn bo bsm" style="color:var(--red2);border-color:var(--bord2);" onclick="clearSaved()">Clear All</button>
+      <button class="btn bo bsm" onclick="exportExcel()">↓ Export (Excel)</button>
+      <button class="btn bo bsm" style="color:var(--red2);" onclick="clearSaved()">Clear All</button>
     </div>
   </div>
   <div class="card">
@@ -1038,77 +796,53 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
 <!-- ══════════════════════ SETTINGS ══════════════════════ -->
 <div class="page" id="page-settings">
   <div class="phdr">
-    <div><div class="ptitle">Settings</div><div class="psub">Configure Google Sheets, competitors & preferences</div></div>
+    <div><div class="ptitle">Settings</div><div class="psub">Google Sheets webhook, competitors & preferences</div></div>
   </div>
   <div class="g2">
     <div>
       <div class="card rl">
         <div class="ctitle">Google Sheets — Webhook Setup</div>
         <div id="sheetsStatus"></div>
-
-        <!-- Step by step instructions -->
-        <div style="background:var(--s2);border-radius:6px;padding:14px;margin-bottom:14px;">
-          <div style="font-size:12px;font-weight:700;color:#E8C060;margin-bottom:10px;letter-spacing:0.05em;">HOW TO SET UP (5 MINUTES)</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
-              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</span>
-              <span>Open your Google Sheet → click <strong style="color:#fff;">Extensions</strong> → <strong style="color:#fff;">Apps Script</strong></span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
-              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</span>
-              <span>Delete everything in the editor. Paste the full contents of <strong style="color:#fff;">google-apps-script.gs</strong> file you downloaded</span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
-              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</span>
-              <span>Click <strong style="color:#fff;">Save</strong> (floppy disk) → then click <strong style="color:#fff;">Deploy</strong> → <strong style="color:#fff;">New Deployment</strong></span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
-              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</span>
-              <span>Set <strong style="color:#fff;">Execute as: Me</strong> and <strong style="color:#fff;">Who has access: Anyone</strong> → click <strong style="color:#fff;">Deploy</strong></span>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
-              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</span>
-              <span>Copy the <strong style="color:#fff;">Web App URL</strong> → paste it below → click Test Connection</span>
-            </div>
+        <div style="background:var(--s2);border-radius:8px;padding:16px;margin-bottom:14px;">
+          <div style="font-size:12px;font-weight:700;color:#E8C060;margin-bottom:12px;letter-spacing:0.05em;">SETUP STEPS (5 MINUTES)</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;font-size:12px;color:#C8C8D8;line-height:1.6;"><span style="background:var(--red2);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;">1</span><span>Open your Google Sheet → <strong style="color:#fff;">Extensions → Apps Script</strong></span></div>
+            <div style="display:flex;gap:10px;font-size:12px;color:#C8C8D8;line-height:1.6;"><span style="background:var(--red2);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;">2</span><span>Delete everything → paste contents of <strong style="color:#fff;">google-apps-script.gs</strong></span></div>
+            <div style="display:flex;gap:10px;font-size:12px;color:#C8C8D8;line-height:1.6;"><span style="background:var(--red2);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;">3</span><span>Click <strong style="color:#fff;">Save → Deploy → New Deployment</strong></span></div>
+            <div style="display:flex;gap:10px;font-size:12px;color:#C8C8D8;line-height:1.6;"><span style="background:var(--red2);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;">4</span><span>Set <strong style="color:#fff;">Execute as: Me</strong> · <strong style="color:#fff;">Who has access: Anyone</strong> → Deploy</span></div>
+            <div style="display:flex;gap:10px;font-size:12px;color:#C8C8D8;line-height:1.6;"><span style="background:var(--red2);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;">5</span><span>Copy the <strong style="color:#fff;">Web App URL</strong> → paste below → Test Connection</span></div>
           </div>
         </div>
-
-        <div class="igrp" style="margin-bottom:12px;">
-          <label class="lbl">Webhook URL (from Google Apps Script Deploy)</label>
+        <div class="igrp">
+          <label class="lbl">Webhook URL</label>
           <input type="text" class="ifield" id="cfg-webhook" placeholder="https://script.google.com/macros/s/XXXXX/exec">
         </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn br bsm" onclick="saveSettings()">Save</button>
-          <button class="btn bgr bsm" onclick="testSheetsConnection()">Test Connection</button>
+          <button class="btn bgr bsm" onclick="testConnection()">Test Connection</button>
         </div>
         <div id="cfg-msg" style="font-size:12px;font-weight:500;margin-top:8px;"></div>
       </div>
       <div class="card">
         <div class="ctitle">Morning Reminder</div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:10px;line-height:1.7;">Enable browser notifications for your 8:00 AM Colombo daily check-in reminder.</p>
-        <button class="btn bgr" onclick="requestNotifPermission()">Enable 8am Reminder</button>
-        <div id="notif-msg" style="font-size:11px;color:var(--green);margin-top:6px;"></div>
+        <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Enable browser notifications. Use this as a reminder when it's time to do your monthly review.</p>
+        <button class="btn bgr" onclick="requestNotif()">Enable Reminder Notifications</button>
+        <div id="notif-msg" style="font-size:12px;color:#50D888;margin-top:8px;"></div>
       </div>
     </div>
     <div>
       <div class="card">
         <div class="ctitle">Hotel Profile</div>
-        <div class="igrp" style="margin-bottom:8px;">
-          <label class="lbl">Hotel Name</label>
-          <input type="text" class="ifield" id="cfg-hotel" value="Colombo Court Hotel and Spa">
-        </div>
-        <div class="igrp" style="margin-bottom:8px;">
-          <label class="lbl">Properties</label>
-          <textarea class="tfield" id="cfg-props" style="min-height:70px;">Colombo Court Hotel and Spa&#10;Poolside Restaurant&#10;Cloud Café & Bar (Rooftop)</textarea>
-        </div>
+        <div class="igrp"><label class="lbl">Hotel Name</label><input type="text" class="ifield" id="cfg-hotel" value="Colombo Court Hotel and Spa"></div>
+        <div class="igrp"><label class="lbl">City</label><input type="text" class="ifield" id="cfg-city" value="Colombo, Sri Lanka"></div>
         <button class="btn bo bsm" onclick="saveSettings()">Save Profile</button>
       </div>
       <div class="card">
         <div class="ctitle">Data Management</div>
-        <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
           <button class="btn bg" onclick="exportExcel()">↓ Download All Data (Excel)</button>
           <button class="btn bo" onclick="exportHTMLReport()">↓ Latest Report (HTML)</button>
-          <button class="btn bo" style="color:var(--red2);border-color:var(--bord2);" onclick="clearAll()">⚠ Clear All Local Data</button>
+          <button class="btn bo" style="color:var(--red2);border-color:#3a2020;" onclick="clearAll()">⚠ Clear All Local Data</button>
         </div>
       </div>
     </div>
@@ -1122,11 +856,9 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
   <div class="modal">
     <div class="mtitle">Add Competitor</div>
     <div class="msub">Add to your watchlist — editable anytime.</div>
-    <div class="igrp" style="margin-bottom:9px;"><label class="lbl">Name</label><input type="text" class="ifield" id="nc-name" placeholder="e.g. Hilton Colombo"></div>
-    <div class="igrp" style="margin-bottom:9px;"><label class="lbl">Type / Notes</label><input type="text" class="ifield" id="nc-type" placeholder="e.g. 5-star · Rooftop competitor"></div>
-    <div class="igrp" style="margin-bottom:12px;"><label class="lbl">Threat Level</label>
-      <select class="sfield" id="nc-threat"><option>High</option><option selected>Medium</option><option>Monitor</option></select>
-    </div>
+    <div class="igrp"><label class="lbl">Name</label><input type="text" class="ifield" id="nc-name" placeholder="e.g. Hilton Colombo"></div>
+    <div class="igrp"><label class="lbl">Type / Notes</label><input type="text" class="ifield" id="nc-type" placeholder="e.g. 5-star · Rooftop competitor"></div>
+    <div class="igrp"><label class="lbl">Threat Level</label><select class="sfield" id="nc-threat"><option>High</option><option selected>Medium</option><option>Monitor</option></select></div>
     <div class="macts">
       <button class="btn br" onclick="addComp()">Add to Watchlist</button>
       <button class="btn bo" onclick="closeM('addCompM')">Cancel</button>
@@ -1147,9 +879,9 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
 </div>
 
 <script>
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 const S = {
   competitors: [
     {id:1,name:'Jetwing Colombo 7',   type:'Boutique · Direct competitor',  threat:'High'},
@@ -1159,79 +891,76 @@ const S = {
     {id:5,name:'Amari Colombo',        type:'International · Rooftop bar',    threat:'High'},
     {id:6,name:'Sofia by Jetwing',     type:'Boutique lifestyle',             threat:'Medium'},
   ],
-  scanData:      {},  // { 'YYYY-MM-DD': { brand:{...}, competitors:{...}, aiResponse:'', events:'', trends:'', property:'' } }
+  reviews:       {},  // { 'YYYY-MM': { brand:{}, competitors:{}, trends:{}, report:'', content:'', savedAt:'' } }
   savedInsights: [],
   stratBrief:    '',
-  lastTrends:    '',
-  settings: { webhook:'', hotel:'Colombo Court Hotel and Spa' },
+  settings:      { webhook:'', hotel:'Colombo Court Hotel and Spa', city:'Colombo, Sri Lanka' },
   charts:        {},
-  cmpCharts:     {}
+  compCharts:    {}
 };
 
-function load() {
+function loadState() {
   try {
-    const d = localStorage.getItem('cc_v4');
+    const d = localStorage.getItem('cc_monthly');
     if (d) {
       const p = JSON.parse(d);
       if (p.competitors)    S.competitors    = p.competitors;
-      if (p.scanData)       S.scanData       = p.scanData;
+      if (p.reviews)        S.reviews        = p.reviews;
       if (p.savedInsights)  S.savedInsights  = p.savedInsights;
       if (p.stratBrief)     S.stratBrief     = p.stratBrief;
-      if (p.lastTrends)     S.lastTrends     = p.lastTrends;
-      if (p.settings)       S.settings = { webhook:'', hotel:'Colombo Court Hotel and Spa', ...p.settings };
+      if (p.settings)       S.settings       = {...S.settings, ...p.settings};
     }
   } catch(e){}
 }
 
-function save() {
-  try { localStorage.setItem('cc_v4', JSON.stringify({
-    competitors:S.competitors, scanData:S.scanData,
-    savedInsights:S.savedInsights, stratBrief:S.stratBrief,
-    lastTrends:S.lastTrends, settings:S.settings
+function persist() {
+  try { localStorage.setItem('cc_monthly', JSON.stringify({
+    competitors:S.competitors, reviews:S.reviews,
+    savedInsights:S.savedInsights, stratBrief:S.stratBrief, settings:S.settings
   })); } catch(e){}
 }
 
-const today  = () => new Date().toISOString().split('T')[0];
-const fmt    = d  => new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-const nowStr = () => new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+const todayStr  = () => new Date().toISOString().split('T')[0];
+const monthStr  = () => new Date().toISOString().slice(0,7);
+const fmtMonth  = m  => { const [y,mo] = m.split('-'); return new Date(y,mo-1,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'}); };
+const fmtDate   = d  => new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const nowStr    = () => new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  load();
+  loadState();
   document.getElementById('hDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-  document.getElementById('ci-date').value = today();
+  document.getElementById('review-month').value = monthStr();
+  document.getElementById('reviewMonthLabel').textContent = fmtMonth(monthStr());
 
   initCharts();
-  renderCompList();
-  renderSaved();
-  renderHistory();
-  updateKPIs();
-  populateCompareSelects();
-  populateMonthSelect();
-  loadStratUI();
+  renderAll();
   loadSettingsUI();
-  checkTodayBanner();
-  updateCompTable();
+  loadStratUI();
+  checkDashBanner();
 
-  document.querySelectorAll('[data-cat]').forEach(t => t.addEventListener('click',()=>{
-    document.querySelectorAll('[data-cat]').forEach(x=>x.classList.remove('on'));
-    t.classList.add('on');
-  }));
-
-  document.querySelectorAll('.ptab').forEach(t => t.addEventListener('click', e => {
-    document.querySelectorAll('.ptab').forEach(x=>x.classList.remove('on'));
-    t.classList.add('on');
-    filterPlatformContent(t.dataset.pf);
-  }));
-
-  scheduleNotification();
+  document.querySelectorAll('[data-cal]').forEach(t => t.addEventListener('click',()=>t.classList.toggle('on')));
 });
 
-// ══════════════════════════════════════════
-// NAV
-// ══════════════════════════════════════════
+function renderAll() {
+  renderCompList();
+  renderCompListFull();
+  renderHistory();
+  renderSaved();
+  renderReportHistory();
+  updateKPIs();
+  refreshCharts();
+  updateCompTable();
+  buildCompPerplexityBtns();
+  buildCompSearchLinks();
+  populateCompSelect();
+}
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
 function nav(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
@@ -1239,845 +968,702 @@ function nav(id) {
   document.querySelectorAll('.ntab').forEach(b=>{
     if(b.getAttribute('onclick')===`nav('${id}')`) b.classList.add('on');
   });
-  if(id==='compare') populateCompareSelects();
-  if(id==='history') renderHistory();
 }
 
-// ══════════════════════════════════════════
-// TODAY BANNER
-// ══════════════════════════════════════════
-function checkTodayBanner() {
-  const td = today();
-  const el = document.getElementById('todayBanner');
-  if (!S.scanData[td] || !S.scanData[td].brand) {
-    el.innerHTML = `<div class="notif-banner"><span class="notif-icon">🔔</span>
-      <span>No check-in recorded for today yet. <strong style="color:var(--gold);">
-      <a href="#" onclick="nav('checkin');return false;" style="color:var(--gold);text-decoration:none;">Start your daily check-in →</a></strong></span></div>`;
+// ════════════════════════════════════════
+// WIZARD STEPS
+// ════════════════════════════════════════
+function goStep(n) {
+  document.querySelectorAll('.wstep').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ws').forEach((s,i)=>{ s.classList.remove('on'); if(i===n-1) s.classList.add('on'); });
+  document.getElementById('step'+n).classList.add('on');
+  window.scrollTo({top:100,behavior:'smooth'});
+}
+
+// ════════════════════════════════════════
+// DASHBOARD BANNER
+// ════════════════════════════════════════
+function checkDashBanner() {
+  const el = document.getElementById('dashBanner');
+  const months = Object.keys(S.reviews).sort();
+  const latest = months[months.length-1];
+  if (!latest) {
+    el.innerHTML = `<div class="nbanner">🔔 No reviews recorded yet. <a href="#" onclick="nav('review');return false;" style="color:#E8C060;font-weight:600;">Start your first monthly review →</a></div>`;
   } else {
-    el.innerHTML = `<div class="notif-banner" style="background:var(--glow);border-color:rgba(45,122,79,0.25);">
-      <span class="notif-icon">✓</span>
-      <span style="color:var(--green);">Today's check-in complete — recorded at ${S.scanData[td].brand.time||'today'}</span></div>`;
+    el.innerHTML = `<div class="nbanner" style="background:rgba(56,168,101,0.1);border-color:rgba(56,168,101,0.25);">✓ <span style="color:#60E890;">Last review: ${fmtMonth(latest)}</span> — all charts updated.</div>`;
   }
 }
 
-// ══════════════════════════════════════════
-// COPY FOR CLAUDE PROMPTS
-// ══════════════════════════════════════════
-function buildCheckinPrompt() {
-  const td = today();
-  const sent   = document.getElementById('ci-sent').value || '?';
-  const ment   = document.getElementById('ci-ment').value || '?';
-  const pos    = document.getElementById('ci-pos').value  || '?';
-  const neg    = document.getElementById('ci-neg').value  || '?';
-  const rev    = document.getElementById('ci-reviews').value.trim();
-  const soc    = document.getElementById('ci-social').value.trim();
-  const cnotes = document.getElementById('ci-comp-notes').value.trim();
-  const trends = document.getElementById('ci-trends').value.trim();
-  const events = document.getElementById('ci-events').value.trim();
-  const prop   = document.getElementById('ci-property').value.trim();
-  const strat  = S.stratBrief ? `\n\nONGOING STRATEGY BRIEF:\n${S.stratBrief}` : '';
+// ════════════════════════════════════════
+// COPY FOR CLAUDE / PERPLEXITY PROMPTS
+// ════════════════════════════════════════
+function copyPerplexityBrand() {
+  const prompt = `Search the web and find current information about "Colombo Court Hotel and Spa" in Colombo, Sri Lanka.
 
-  // Competitor quick data
+Find and summarise:
+1. Recent customer reviews from Google, TripAdvisor, and Booking.com — what are people saying?
+2. Any recent news articles, blog posts, or travel articles mentioning this hotel
+3. Any social media mentions or posts about this hotel (Instagram, TikTok, Facebook)
+4. Current star ratings across platforms
+5. What this hotel is most known for — both positive and negative
+
+Please be specific, cite sources where possible, and focus on content from the last 3-6 months.`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    const el = document.getElementById('px-brand-copied');
+    el.style.display='block';
+    setTimeout(()=>el.style.display='none',4000);
+  }).catch(()=>alert('Copy failed — please copy manually:\n\n'+prompt));
+}
+
+function copyPx(query) {
+  const prompt = `Search the web for: ${query}
+
+For the context of Colombo Court Hotel and Spa (a boutique hotel with a poolside restaurant and Cloud Café & Bar rooftop), find:
+1. The top 5 most significant current trends
+2. What content is performing well on Instagram and TikTok related to this
+3. Any specific events or moments coming up in Colombo
+4. What competitors in the Colombo hotel space are doing about this
+
+Please be specific and focus on content from the last 3-6 months where possible.`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    const el = document.getElementById('px-trend-copied');
+    el.style.display='block';
+    setTimeout(()=>el.style.display='none',4000);
+  }).catch(()=>alert('Copy failed.'));
+}
+
+function buildCompPerplexityBtns() {
+  const el = document.getElementById('compPerplexityBtns');
+  if (!el) return;
+  el.innerHTML = S.competitors.map(c=>`
+    <button class="pxbtn" style="margin-bottom:8px;" onclick="copyCompPx('${c.name.replace(/'/g,"\\'")}')">
+      <span>🔎</span> Research: ${c.name}
+    </button>`).join('');
+}
+
+function copyCompPx(name) {
+  const prompt = `Search the web for recent information about "${name}" hotel in Colombo, Sri Lanka.
+
+Find and summarise:
+1. Current customer reviews and star ratings (Google, TripAdvisor, Booking.com)
+2. Any recent promotions, events, or campaigns they are running
+3. Their social media activity — what type of content are they posting on Instagram/Facebook/TikTok?
+4. What they are known for — their key differentiators
+5. Any recent news or mentions in the last 3-6 months
+6. What their customers love most AND what they complain about
+
+This information will be used to compare against Colombo Court Hotel and Spa, a boutique hotel with a poolside restaurant and Cloud Café & Bar rooftop bar.`;
+
+  navigator.clipboard.writeText(prompt).then(()=>alert(`✓ Copied prompt for ${name}! Paste into perplexity.ai`)).catch(()=>alert('Copy failed.'));
+}
+
+function buildCompSearchLinks() {
+  const el = document.getElementById('compSearchLinks');
+  if (!el) return;
+  el.innerHTML = S.competitors.map(c=>`
+    <a class="srch-btn" href="https://www.google.com/search?q=${encodeURIComponent(c.name+' Colombo reviews')}" target="_blank">
+      <span class="srch-icon">🔍</span>
+      <span class="srch-label">${c.name}</span>
+      <span class="srch-arrow">↗</span>
+    </a>`).join('');
+}
+
+function buildMasterPrompt() {
+  const month  = document.getElementById('review-month').value || monthStr();
+  const bSent  = document.getElementById('b-sent').value      || '?';
+  const bRev   = document.getElementById('b-rev').value       || '?';
+  const bPos   = document.getElementById('b-pos').value       || '?';
+  const bNeg   = document.getElementById('b-neg').value       || '?';
+  const bStars = document.getElementById('b-stars').value     || '?';
+  const bTA    = document.getElementById('b-ta').value        || '?';
+  const bReviews  = document.getElementById('b-reviews').value.trim()  || 'None recorded.';
+  const bSocial   = document.getElementById('b-social').value.trim()   || 'None recorded.';
+  const cloudcafe = document.getElementById('b-cloudcafe').value.trim()|| 'None recorded.';
+  const poolside  = document.getElementById('b-poolside').value.trim() || 'None recorded.';
+  const revPaste  = document.getElementById('rev-paste').value.trim()  || 'None recorded.';
+  const trPaste   = document.getElementById('tr-paste').value.trim()   || 'None recorded.';
+  const trObs     = document.getElementById('tr-obs').value.trim()     || 'None recorded.';
+  const trEvents  = document.getElementById('tr-events').value.trim()  || 'None noted.';
+  const notes     = document.getElementById('extra-notes').value.trim()|| 'None.';
+  const strat     = S.stratBrief ? `\n\nONGOING MARKETING STRATEGY BRIEF:\n${S.stratBrief}` : '';
+
+  // Competitor data
   const compData = S.competitors.map(c => {
-    const d = S.scanData[td]?.competitors?.[c.name];
-    return `${c.name}: Sentiment ${d?.sentiment||'?'}/100, Activity ${d?.activity||'?'}/10`;
-  }).join('\n');
+    const d = S.reviews[month]?.competitors?.[c.name];
+    if (!d) return `${c.name}: No data entered this month.`;
+    return `${c.name} (${c.threat} threat):
+  Sentiment: ${d.sentiment||'?'}/100 | Activity: ${d.activity||'?'}/10 | Stars: ${d.stars||'?'} | Mentions: ${d.mentions||'?'}
+  Promotions: ${d.promo||'None noted'}
+  Research findings: ${d.px||'None'}`;
+  }).join('\n\n');
 
-  return `You are a hospitality marketing strategist for Colombo Court Hotel and Spa — a boutique hotel in Colombo with a poolside restaurant and Cloud Café & Bar rooftop bar. Budget is limited. Give sharp, specific, actionable analysis for the Colombo market.${strat}
+  const prompt = `You are an expert hospitality marketing strategist for Colombo Court Hotel and Spa — a boutique hotel in Colombo, Sri Lanka with a poolside restaurant and Cloud Café & Bar rooftop bar. Budget is limited. Give sharp, actionable, Colombo-market-specific analysis.${strat}
 
-DAILY CHECK-IN DATA — ${fmt(td)}
-════════════════════════════════════
+═══════════════════════════════════════════════════════
+MONTHLY INTELLIGENCE REPORT DATA — ${fmtMonth(month)}
+═══════════════════════════════════════════════════════
 
-BRAND: COLOMBO COURT HOTEL & SPA
-Sentiment Score: ${sent}/100
-Estimated Mentions: ${ment}
-Positive: ${pos}% | Negative: ${neg}%
-Reviews / Comments Seen:
-${rev || 'None recorded today.'}
+COLOMBO COURT — BRAND DATA
+Sentiment Score: ${bSent}/100
+New Reviews This Month: ${bRev}
+Positive: ${bPos}% | Negative: ${bNeg}%
+Google Star Rating: ${bStars}/5 | TripAdvisor: ${bTA}/5
 
-Social Media Activity:
-${soc || 'None recorded today.'}
+REVIEW SUMMARY:
+${bReviews}
 
-COMPETITOR DATA:
+SOCIAL MEDIA THIS MONTH:
+${bSocial}
+
+CLOUD CAFÉ & BAR SPECIFIC:
+${cloudcafe}
+
+POOLSIDE RESTAURANT SPECIFIC:
+${poolside}
+
+ONLINE RESEARCH FINDINGS:
+${revPaste}
+
+─────────────────────────────────────
+COMPETITOR DATA
+─────────────────────────────────────
 ${compData}
 
-Competitor Activity Notes:
-${cnotes || 'None recorded today.'}
+─────────────────────────────────────
+CITY TRENDS & MARKET INTELLIGENCE
+─────────────────────────────────────
+${trPaste}
 
-CITY & TRENDS:
-${trends || 'None recorded today.'}
+PERSONAL OBSERVATIONS:
+${trObs}
 
-Upcoming Events:
-${events || 'None recorded today.'}
+UPCOMING EVENTS & CALENDAR:
+${trEvents}
 
-PROPERTY NOTES:
-${prop || 'None recorded today.'}
+ADDITIONAL NOTES:
+${notes}
 
-════════════════════════════════════
+═══════════════════════════════════════════════════════
 
-Please provide a structured daily intelligence report:
+Please generate a complete Monthly Marketing Intelligence Report structured as follows:
 
-1. BRAND STATUS — Overall assessment. What today's sentiment score means. Key things from the reviews.
-2. URGENT ITEMS — Anything needing immediate response or action today.
-3. COMPETITIVE PULSE — Who is active? Any immediate threats or opportunities from competitors?
-4. TREND ALIGNMENT — Are we tapping current Colombo trends? What are we missing?
-5. TODAY'S TOP 3 ACTIONS — Specific, immediately actionable marketing moves for today or this week.
-6. CONTENT SUGGESTION — One specific social media post idea for today based on this data.
-7. WATCH OUT — One risk or thing to monitor closely.`;
-}
-
-function copyCheckinForClaude() {
-  const prompt = buildCheckinPrompt();
-  navigator.clipboard.writeText(prompt).then(() => {
-    const el = document.getElementById('cfc-copied');
-    el.style.display = 'block';
-    setTimeout(()=>el.style.display='none', 4000);
-  }).catch(() => alert('Copy failed — please copy manually from below.\n\n' + prompt.substring(0,200)+'...'));
-}
-
-function copyBrandForClaude() {
-  const source = document.getElementById('br-source').value;
-  const prop   = document.getElementById('br-prop').value;
-  const sent   = document.getElementById('br-sent').value || '?';
-  const ment   = document.getElementById('br-ment').value || '?';
-  const content= document.getElementById('br-content').value.trim();
-  const strat  = S.stratBrief ? `\n\nSTRATEGY BRIEF:\n${S.stratBrief}` : '';
-
-  const prompt = `You are a hospitality marketing strategist for Colombo Court Hotel and Spa (boutique hotel, Colombo — poolside restaurant + Cloud Café & Bar rooftop).${strat}
-
-BRAND INTELLIGENCE INPUT
-Source: ${source}
-Property Focus: ${prop}
-Sentiment Score: ${sent}/100
-Mentions Found: ${ment}
-
-Content / Reviews Found:
-${content || 'No content pasted — provide general analysis for this source.'}
-
-Please provide:
-1. SENTIMENT ANALYSIS — Breakdown, key emotional drivers, SENTIMENT_SCORE: [0-100]
-2. KEY THEMES — What people love, what they complain about
-3. STRENGTHS TO AMPLIFY — What to feature in marketing
-4. URGENT ISSUES — Problems needing attention now
-5. HIDDEN OPPORTUNITIES — What customers are indirectly asking for
-6. RESPONSE TEMPLATE — If any reviews need responding to, draft 1 example
-7. IMMEDIATE ACTIONS — 3 specific actions for this week`;
-
-  navigator.clipboard.writeText(prompt).then(() => {
-    const el = document.getElementById('br-copied');
-    el.style.display='block';
-    setTimeout(()=>el.style.display='none',4000);
-  }).catch(()=>alert('Copy failed.'));
-}
-
-function copyAllCompsForClaude() {
-  const td = today();
-  const compRows = S.competitors.map(c => {
-    const d = S.scanData[td]?.competitors?.[c.name] || {};
-    const act = document.getElementById('cp-activity')?.value || '';
-    return `${c.name} (${c.threat} threat): Sentiment ${d.sentiment||'?'}/100, Mentions ${d.mentions||'?'}, Activity ${d.activity||'?'}/10${d.notes?'\nNotes: '+d.notes:''}`;
-  }).join('\n\n');
-  const strat = S.stratBrief ? `\n\nSTRATEGY BRIEF:\n${S.stratBrief}` : '';
-
-  const prompt = `You are a hospitality marketing strategist for Colombo Court Hotel and Spa (boutique hotel, Colombo — poolside restaurant + Cloud Café & Bar rooftop). Budget is limited.${strat}
-
-COMPETITOR INTELLIGENCE DATA — ${fmt(td)}
-════════════════════════════════════
-${compRows}
-════════════════════════════════════
-
-Please provide:
-1. COMPETITIVE LANDSCAPE — Overall market position of Colombo Court vs this set
-2. BIGGEST THREATS — Top 2-3 immediate competitive threats and why
-3. BIGGEST OPPORTUNITIES — What gaps are competitors leaving open?
-4. BRAND A vs BRAND B GAPS — Specific areas where Colombo Court can win
-5. COUNTER-STRATEGIES — 3-4 specific actions for Colombo Court (boutique budget, no paid ads)
-6. CONTENT ANGLES TO OWN — Positioning and content themes competitors aren't using
-7. THIS WEEK'S PRIORITY — Single most important competitive move to make now`;
-
-  navigator.clipboard.writeText(prompt).then(() => {
-    addAlert('Competitor data copied for Claude.ai','gld');
-    alert('✓ Copied! Paste into Claude.ai now.');
-  }).catch(()=>alert('Copy failed.'));
-}
-
-function copyTrendsForClaude() {
-  const obs  = document.getElementById('tr-obs').value.trim();
-  const q    = document.getElementById('tr-q').value.trim();
-  const cat  = document.querySelector('[data-cat].on')?.dataset.cat || 'hospitality trends';
-  const strat = S.stratBrief ? `\n\nSTRATEGY BRIEF:\n${S.stratBrief}` : '';
-
-  const prompt = `You are a hospitality marketing strategist for Colombo Court Hotel and Spa (boutique hotel, Colombo — poolside restaurant + Cloud Café & Bar rooftop). Budget is limited.${strat}
-
-CITY TRENDS INTELLIGENCE — ${fmt(today())}
-Category Focus: ${cat} in Colombo, Sri Lanka (March 2026)
-
-OBSERVATIONS:
-${obs || 'No specific observations — provide general analysis.'}
-
-${q ? 'SPECIFIC QUESTION:\n'+q : ''}
-
-Please provide:
-1. TOP TRENDS NOW — 5 most significant current trends in Colombo for this category
-2. SOCIAL MEDIA ANGLES — What content is getting traction on Instagram/TikTok in Colombo
-3. CONSUMER BEHAVIOUR — How is the target 25-40 professional/tourist/expat audience behaving?
-4. OPPORTUNITIES FOR COLOMBO COURT — How can the hotel, poolside restaurant, and Cloud Café & Bar specifically exploit each trend?
-5. COMPETITORS TAPPING THESE — Who in Colombo is doing it well? What can we learn?
-6. 4 READY-TO-EXECUTE IDEAS — Specific social content ideas riding these trends (smartphone-achievable, no big budget)
-7. QUICK WINS THIS WEEK — 3 actions to do immediately
-8. UPCOMING MOMENTS — Colombo calendar events in the next 6 weeks to plan around`;
-
-  navigator.clipboard.writeText(prompt).then(() => {
-    const el = document.getElementById('tr-copied');
-    el.style.display='block';
-    setTimeout(()=>el.style.display='none',4000);
-  }).catch(()=>alert('Copy failed.'));
-}
-
-function copyContentForClaude() {
-  const goal   = document.getElementById('cnt-goal').value;
-  const aud    = document.getElementById('cnt-aud').value;
-  const occ    = document.getElementById('cnt-occ').value || 'no specific occasion';
-  const ctx    = document.getElementById('cnt-ctx').value.trim();
-  const useTr  = document.getElementById('cnt-trends').value === 'yes';
-  const strat  = S.stratBrief ? `\n\nMARKETING STRATEGY BRIEF:\n${S.stratBrief}` : '';
-  const trCtx  = useTr && S.lastTrends ? `\n\nLATEST TREND DATA:\n${S.lastTrends.substring(0,500)}` : '';
-
-  const prompt = `You are an expert social media content strategist for Colombo Court Hotel and Spa (boutique hotel, Colombo — poolside restaurant + Cloud Café & Bar rooftop). Budget is limited, no paid ads.${strat}${trCtx}
-
-CONTENT BRIEF
-Goal: ${goal}
-Target Audience: ${aud}
-Timeframe / Occasion: ${occ}
-Additional Context: ${ctx || 'None — use best practices for Colombo boutique hotel market.'}
-
-Generate complete, platform-specific content. Follow each platform's algorithm rules precisely.
-
-════════════════════════════
-📸 INSTAGRAM
-════════════════════════════
-Algorithm: Reels get 3x reach. Carousel saves boost reach. Hook in first line critical.
-- FEED POST CAPTION: 150-220 words, hook + body + CTA, appropriate emojis for brand
-- REEL CONCEPT: Hook (first 3 seconds spoken), 5-7 shot list, on-screen text overlays, audio suggestion, caption (under 100 words)
-- STORY SEQUENCE: 3-slide sequence driving reservation or footfall
-- HASHTAG SET: 28-30 tags — 5 broad hospitality + 5 Colombo-specific + 5 niche F&B/rooftop + 5 Sri Lanka travel + 5 brand/occasion + rest trending
-- BEST POSTING TIME: Colombo audience specifically
-- ALT TEXT: For feed post accessibility
-
-════════════════════════════
-📘 FACEBOOK
-════════════════════════════
-Algorithm: Long-form storytelling, Events drive RSVPs, comment threads rewarded.
-- LONG-FORM POST: 250-350 words, conversational storytelling, paragraph breaks
-- ENGAGEMENT HOOK: Question at end to drive comments
-- EVENT FORMAT: Event description if relevant
-- BOOST AUDIENCE: Target description if ever running a small paid boost
-- BEST POSTING TIME: Colombo Facebook audience
-
-════════════════════════════
-🎵 TIKTOK
-════════════════════════════
-Algorithm: First 2 seconds = everything. Sound is 80% of experience. Niche tags beat mega-tags.
-- VIDEO CONCEPT: Hook (exact first spoken line), 3-act structure, total duration
-- ON-SCREEN TEXT: Overlay text with timing (e.g. "0:02 — text here")
-- AUDIO: Trending sound suggestion OR original audio direction
-- CAPTION: Under 150 characters, punchy
-- HASHTAGS: 5-7 niche + trending Colombo/hospitality tags
-- DUET/STITCH PROMPT: Encourage UGC
-- POSTING TIME: Sri Lanka TikTok peak
-
-════════════════════════════
-💼 LINKEDIN
-════════════════════════════
-Algorithm: Professional narrative, line-break formatting, NO external links in post body, thought leadership > promotional.
-- POST: 200-280 words, bold opening statement (not "excited to announce"), line breaks every 2-3 lines, no links in body
-- HEADLINE: First line 5-10 words that stop the scroll
-- CTA: Soft call-to-action for corporate/MICE audience (events, team outings, staycations)
-- HASHTAGS: 3-5 professional hashtags only
-
-════════════════════════════
-CROSS-PLATFORM NOTES
-════════════════════════════
-- Posting order: which platform first and why
-- Repurposing guide: adapting one piece across all 4 platforms
-- 5 universal caption HOOKS reusable across all platforms`;
-
-  navigator.clipboard.writeText(prompt).then(() => {
-    const el = document.getElementById('cnt-copied');
-    el.style.display='block';
-    setTimeout(()=>el.style.display='none',4000);
-  }).catch(()=>alert('Copy failed.'));
-}
-
-function copyDailyReportForClaude() {
-  const td = today();
-  const d  = S.scanData[td];
-  if (!d) { alert('No check-in for today. Complete your daily check-in first.'); return; }
-
-  const compSummary = Object.entries(d.competitors||{}).map(([n,v])=>
-    `${n}: Sentiment ${v.sentiment||'?'}/100`).join(' | ') || 'No competitor data today.';
-
-  const prompt = `Generate a professional Daily Marketing Intelligence Snapshot for Colombo Court Hotel and Spa.
-
-Date: ${fmt(td)}
-Brand Sentiment: ${d.brand?.sentiment||'?'}/100
-Mentions: ${d.brand?.mentions||'?'}
-Positive: ${d.brand?.positive||'?'}% | Negative: ${d.brand?.negative||'?'}%
-Reviews noted: ${d.brand?.reviews||'None'}
-Social notes: ${d.brand?.social||'None'}
-Competitors: ${compSummary}
-City trends: ${d.trends||'None noted'}
-Property notes: ${d.property||'None noted'}
-Events: ${d.events||'None noted'}
-
-Format as:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DAILY SNAPSHOT — ${fmt(td)}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TODAY'S ASSESSMENT: [one line]
-BRAND STATUS: [2 sentences]
-COMPETITOR PULSE: [2 sentences]
-TOP OPPORTUNITY: [specific and actionable]
-TOP RISK: [specific alert]
-RECOMMENDED CONTENT TODAY: [1-2 specific post ideas]
-TOMORROW'S FOCUS: [1 priority]`;
-
-  navigator.clipboard.writeText(prompt).then(()=>alert('✓ Copied! Paste into Claude.ai for your daily report.')).catch(()=>alert('Copy failed.'));
-}
-
-function copyMonthlyReportForClaude() {
-  const month = document.getElementById('rpt-month').value;
-  const focus = document.getElementById('rpt-focus').value;
-  const notes = document.getElementById('rpt-notes').value.trim();
-
-  const monthDays = Object.keys(S.scanData).filter(d=>d.startsWith(month)).sort();
-  if (monthDays.length === 0) { alert('No data for this month yet.'); return; }
-
-  const brandSeries = monthDays.map(d=>`${d}: Sentiment ${S.scanData[d].brand?.sentiment||'?'}/100, Mentions ${S.scanData[d].brand?.mentions||'?'}`).join('\n');
-  const allComps    = [...new Set(monthDays.flatMap(d=>Object.keys(S.scanData[d].competitors||{})))];
-  const compAvg     = allComps.map(n=>{
-    const vals = monthDays.map(d=>S.scanData[d].competitors?.[n]?.sentiment).filter(Boolean);
-    return `${n}: Avg ${vals.length?(vals.reduce((s,x)=>s+x,0)/vals.length).toFixed(0):'?'}/100 (${vals.length} data points)`;
-  }).join('\n');
-
-  const prompt = `Generate a full Monthly Marketing Intelligence Report for Colombo Court Hotel and Spa.
-
-Month: ${month}
-Focus: ${focus}
-Data points: ${monthDays.length} daily check-ins
-
-BRAND DAILY DATA:
-${brandSeries}
-
-COMPETITOR AVERAGES:
-${compAvg || 'No competitor data.'}
-
-MARKETING MANAGER NOTES:
-${notes || 'None provided.'}
-
-Generate as:
-═══════════════════════════════════════
 COLOMBO COURT HOTEL & SPA
-MONTHLY MARKETING INTELLIGENCE REPORT — ${month}
-═══════════════════════════════════════
+MONTHLY MARKETING INTELLIGENCE REPORT — ${fmtMonth(month)}
+═══════════════════════════════════════════════════════
 
-EXECUTIVE SUMMARY (3-4 sentences)
+EXECUTIVE SUMMARY (3-4 sentences — the most important things this month)
 
 1. BRAND PERFORMANCE
-- Trend direction (improving/declining/stable)
-- Best and worst performing days
-- Key wins this month
+- Overall sentiment assessment and what it means
+- Review highlights (what guests loved, what needs fixing)
+- Social media performance
+- Cloud Café & Bar specific findings
+- Poolside Restaurant specific findings
+- Key wins and losses
 
 2. COMPETITIVE LANDSCAPE
-- Competitor ranking by sentiment
-- Who gained ground
-- Biggest threats and opportunities
+- How Colombo Court ranks vs competitors this month
+- Who is winning and why
+- Biggest competitive threats right now
+- Opportunities competitors are leaving open
+- Side-by-side comparison table (use text formatting)
 
-3. MARKET ALIGNMENT
-- How well aligned were we with Colombo trends?
-- Missed opportunities
+3. MARKET & TRENDS ALIGNMENT
+- Are we aligned with current Colombo trends?
+- Opportunities we are missing
+- Upcoming calendar events to capitalise on
 
-4. PROPERTY HIGHLIGHTS
-Hotel · Poolside Restaurant · Cloud Café & Bar
+4. URGENT ACTION ITEMS (things to fix immediately)
 
-5. CONTENT & SOCIAL MEDIA REVIEW
-- What worked / what should we have posted
-
-6. NEXT MONTH STRATEGY
+5. NEXT MONTH STRATEGY
 - Top 5 marketing priorities
-- Key calendar events to leverage
-- Content themes to own
+- Specific campaigns or activations to plan
+- Events and calendar moments to leverage
+- Platform-specific recommendations
 
-7. ACTION LIST (numbered, prioritised)`;
+6. RECOMMENDED ACTION LIST (numbered, prioritised, with timeframe)
 
-  navigator.clipboard.writeText(prompt).then(()=>alert('✓ Copied! Paste into Claude.ai for your monthly report.')).catch(()=>alert('Copy failed.'));
+Make this report detailed, specific, and directly usable. Include specific numbers and comparisons where data is available.`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    const el = document.getElementById('master-copied');
+    el.style.display='block';
+    setTimeout(()=>el.style.display='none',5000);
+    addAlert('Master report prompt copied — paste into Claude.ai','pos');
+  }).catch(()=>alert('Copy failed.'));
 }
 
-function copyCompareForClaude() {
-  const a     = document.getElementById('cmpA').value;
-  const b     = document.getElementById('cmpB').value;
-  const range = parseInt(document.getElementById('cmpRange').value)||999;
-  const dates = Object.keys(S.scanData).sort().slice(-range);
+function buildContentPrompt() {
+  const month  = document.getElementById('review-month').value || monthStr();
+  const strat  = S.stratBrief ? `\n\nMARKETING STRATEGY BRIEF:\n${S.stratBrief}` : '';
+  const trEvents = document.getElementById('tr-events').value.trim() || 'None noted.';
+  const trObs    = document.getElementById('tr-obs').value.trim()    || 'None noted.';
 
-  const getSeries = brand => dates.map(d => {
-    if(brand==='Colombo Court') return S.scanData[d]?.brand?.sentiment||null;
-    return S.scanData[d]?.competitors?.[brand]?.sentiment||null;
-  }).filter(Boolean);
+  const prompt = `You are an expert social media content strategist for Colombo Court Hotel and Spa — a boutique hotel in Colombo, Sri Lanka with a poolside restaurant and Cloud Café & Bar rooftop bar. No paid ads — organic only. Budget is limited.${strat}
 
-  const aS = getSeries(a), bS = getSeries(b);
-  const avgA = aS.length ? (aS.reduce((s,x)=>s+x,0)/aS.length).toFixed(0) : '?';
-  const avgB = bS.length ? (bS.reduce((s,x)=>s+x,0)/bS.length).toFixed(0) : '?';
+Generate a complete content calendar for next month based on this context:
 
-  const prompt = `Compare ${a} vs ${b} for Colombo Court Hotel & Spa's marketing strategy.
+TRENDS OBSERVED THIS MONTH: ${trObs}
+UPCOMING EVENTS & CALENDAR: ${trEvents}
+REVIEW MONTH: ${fmtMonth(month)}
 
-DATA (last ${range===999?'all time':range+' days'}):
-${a}: Avg sentiment ${avgA}/100 over ${aS.length} data points
-${b}: Avg sentiment ${avgB}/100 over ${bS.length} data points
+Generate platform-specific content for all four platforms. Follow each platform's algorithm rules.
 
-Provide:
-1. HEAD-TO-HEAD — Who is winning and in what areas?
-2. KEY DIFFERENTIATORS — What makes each brand stand out in Colombo?
-3. STRATEGIC IMPLICATIONS — What does this mean for Colombo Court specifically?
-4. GAPS TO EXPLOIT — What is the weaker brand failing at that Colombo Court can own?
-5. RECOMMENDED ACTIONS — 3 specific moves for Colombo Court based on this comparison.`;
+════════════════════════
+📸 INSTAGRAM
+════════════════════════
+Algorithm: Reels get 3x reach. Post 4-5x per week. Hook critical in first line.
+- MONTHLY CONTENT THEMES (3 themes for the month)
+- 8 POST IDEAS with: concept, ready-to-post caption, hashtags (28-30 tags — mix of Colombo-specific, niche, broad), best day & time
+- 4 REEL CONCEPTS with hook (first 3 seconds), shot list (achievable with smartphone), audio suggestion
+- 4 STORY SEQUENCES to drive footfall or bookings
+- 5 CAPTION HOOKS reusable throughout the month
 
-  navigator.clipboard.writeText(prompt).then(()=>alert('✓ Copied! Paste into Claude.ai.')).catch(()=>alert('Copy failed.'));
+════════════════════════
+📘 FACEBOOK
+════════════════════════
+Algorithm: Long-form storytelling, Events drive RSVPs, engagement questions boost reach.
+- 6 POST IDEAS with full captions (250-300 words each)
+- 2 EVENT POST formats (for any events at the hotel)
+- Best posting days & times for Colombo Facebook audience
+
+════════════════════════
+🎵 TIKTOK
+════════════════════════
+Algorithm: First 2 seconds = everything. Sound is 80% of experience.
+- 6 VIDEO CONCEPTS with exact opening hook (spoken first line), 3-act structure, duration, audio direction
+- On-screen text timing guide
+- Hashtag sets (5-7 niche tags per video)
+- Best posting times for Sri Lanka TikTok audience
+
+════════════════════════
+💼 LINKEDIN
+════════════════════════
+Algorithm: Professional narrative, line breaks every 2-3 lines, NO links in post body.
+- 4 POST IDEAS targeting corporate clients, event planners, and Colombo expats
+- Full captions with bold opening statements (not "excited to announce")
+- Soft CTAs for MICE and corporate bookings
+
+════════════════════════
+CONTENT CALENDAR OVERVIEW
+════════════════════════
+- Week-by-week posting schedule for all 4 platforms
+- Key dates to plan content around
+- How to repurpose one piece of content across all platforms`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    const el = document.getElementById('content-copied');
+    el.style.display='block';
+    setTimeout(()=>el.style.display='none',5000);
+  }).catch(()=>alert('Copy failed.'));
 }
 
-// ══════════════════════════════════════════
-// SAVE CHECK-IN
-// ══════════════════════════════════════════
-function saveCheckin() {
-  const dt      = document.getElementById('ci-date').value || today();
-  const sent    = parseInt(document.getElementById('ci-sent').value)||0;
-  const ment    = parseInt(document.getElementById('ci-ment').value)||0;
-  const pos     = parseInt(document.getElementById('ci-pos').value)||0;
-  const neg     = parseInt(document.getElementById('ci-neg').value)||0;
-  const reviews = document.getElementById('ci-reviews').value.trim();
-  const social  = document.getElementById('ci-social').value.trim();
-  const cnotes  = document.getElementById('ci-comp-notes').value.trim();
-  const trends  = document.getElementById('ci-trends').value.trim();
-  const events  = document.getElementById('ci-events').value.trim();
-  const prop    = document.getElementById('ci-property').value.trim();
-  const aiResp  = document.getElementById('ci-ai-response').value.trim();
+// ════════════════════════════════════════
+// SAVE MONTHLY REVIEW
+// ════════════════════════════════════════
+function saveMonthlyReview() {
+  const month   = document.getElementById('review-month').value || monthStr();
+  const report  = document.getElementById('report-paste').value.trim();
+  const content = document.getElementById('content-paste').value.trim();
 
-  if (!sent) { alert('Please enter a sentiment score first.'); return; }
+  if (!report) { alert('Paste the Claude.ai report response first (Step 5).'); return; }
 
-  if (!S.scanData[dt]) S.scanData[dt] = { competitors:{} };
+  if (!S.reviews[month]) S.reviews[month] = { competitors:{} };
 
-  S.scanData[dt].brand = { sentiment:sent, mentions:ment, positive:pos, negative:neg, reviews, social, time:nowStr() };
-  S.scanData[dt].trends   = trends;
-  S.scanData[dt].events   = events;
-  S.scanData[dt].property = prop;
-  S.scanData[dt].compNotes= cnotes;
-  S.scanData[dt].aiResponse = aiResp;
+  // Save brand data
+  S.reviews[month].brand = {
+    sentiment: parseInt(document.getElementById('b-sent').value)||0,
+    reviews:   parseInt(document.getElementById('b-rev').value)||0,
+    positive:  parseInt(document.getElementById('b-pos').value)||0,
+    negative:  parseInt(document.getElementById('b-neg').value)||0,
+    stars:     parseFloat(document.getElementById('b-stars').value)||0,
+    tripadvisor: parseFloat(document.getElementById('b-ta').value)||0,
+    reviewText: document.getElementById('b-reviews').value.trim(),
+    social:     document.getElementById('b-social').value.trim(),
+    cloudcafe:  document.getElementById('b-cloudcafe').value.trim(),
+    poolside:   document.getElementById('b-poolside').value.trim()
+  };
 
-  if (trends) S.lastTrends = trends;
+  S.reviews[month].trends   = document.getElementById('tr-paste').value.trim();
+  S.reviews[month].trObs    = document.getElementById('tr-obs').value.trim();
+  S.reviews[month].trEvents = document.getElementById('tr-events').value.trim();
+  S.reviews[month].report   = report;
+  S.reviews[month].content  = content;
+  S.reviews[month].savedAt  = new Date().toISOString();
 
-  if (aiResp) {
+  // Save as insight too
+  S.savedInsights.unshift({
+    id: Date.now(),
+    title: `Monthly Report — ${fmtMonth(month)}`,
+    content: report,
+    date: fmtDate(todayStr()),
+    preview: report.substring(0,150)+'…'
+  });
+
+  if (content) {
     S.savedInsights.unshift({
-      id:Date.now(), title:`Daily Check-in — ${fmt(dt)}`,
-      content:aiResp, date:fmt(dt), preview:aiResp.substring(0,140)+'…'
+      id: Date.now()+1,
+      title: `Content Plan — ${fmtMonth(month)}`,
+      content: content,
+      date: fmtDate(todayStr()),
+      preview: content.substring(0,150)+'…'
     });
+    document.getElementById('contentBody').textContent = content;
   }
 
-  save();
-  refreshCharts(); updateKPIs(); renderHistory(); checkTodayBanner();
+  persist();
+  renderAll();
+  checkDashBanner();
+  writeToSheets(month);
 
-  const msg = document.getElementById('ci-save-msg');
-  msg.textContent = '✓ Check-in saved for '+fmt(dt);
-  msg.style.display='block';
-  setTimeout(()=>msg.style.display='none',4000);
+  const msg = document.getElementById('review-save-msg');
+  msg.textContent = `✓ ${fmtMonth(month)} review saved successfully!`;
+  msg.style.display = 'block';
+  setTimeout(()=>msg.style.display='none',5000);
 
-  addAlert(`Daily check-in saved — Brand sentiment: ${sent}/100`,'pos');
-  writeToSheets(dt);
+  addAlert(`Monthly review saved — ${fmtMonth(month)}`, 'pos');
 }
 
-function clearCheckin() {
-  ['ci-sent','ci-ment','ci-pos','ci-neg','ci-reviews','ci-social','ci-comp-notes','ci-trends','ci-events','ci-property','ci-ai-response'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.value = id==='ci-date'?today():'';
-  });
+function saveContent() {
+  const month   = document.getElementById('review-month').value || monthStr();
+  const content = document.getElementById('content-paste').value.trim();
+  if (!content) { alert('Paste the content calendar first.'); return; }
+  if (!S.reviews[month]) S.reviews[month] = { competitors:{} };
+  S.reviews[month].content = content;
+  document.getElementById('contentBody').textContent = content;
+  persist();
+  addAlert('Content plan saved','pos');
+  alert('✓ Content plan saved!');
 }
 
-// ══════════════════════════════════════════
-// SAVE BRAND
-// ══════════════════════════════════════════
-function saveBrandAnalysis() {
-  const resp = document.getElementById('br-ai-resp').value.trim();
-  if (!resp) { alert('Paste Claude.ai response first.'); return; }
-  document.getElementById('br-ob-body').textContent = resp;
-  document.getElementById('br-outbox').classList.add('on');
-  S.savedInsights.unshift({id:Date.now(),title:'Brand Analysis — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved(); addAlert('Brand analysis saved','pos');
+// ════════════════════════════════════════
+// COMPETITOR DATA
+// ════════════════════════════════════════
+function populateCompSelect() {
+  const sel = document.getElementById('cp-sel');
+  if (!sel) return;
+  sel.innerHTML = S.competitors.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
 }
 
-// ══════════════════════════════════════════
-// COMPETITOR DATA ENTRY
-// ══════════════════════════════════════════
 function saveCompData() {
-  const name  = document.getElementById('cp-name').value;
-  const sent  = parseInt(document.getElementById('cp-sent').value)||0;
-  const ment  = parseInt(document.getElementById('cp-ment').value)||0;
-  const act   = parseInt(document.getElementById('cp-act').value)||5;
-  const notes = document.getElementById('cp-activity').value.trim();
-  const td    = today();
-
+  const month = document.getElementById('review-month').value || monthStr();
+  const name  = document.getElementById('cp-sel').value;
   if (!name) { alert('Select a competitor.'); return; }
-  if (!S.scanData[td]) S.scanData[td] = {competitors:{}};
-  if (!S.scanData[td].competitors) S.scanData[td].competitors = {};
-  S.scanData[td].competitors[name] = { sentiment:sent, mentions:ment, activity:act, notes, time:nowStr() };
+  if (!S.reviews[month]) S.reviews[month] = { competitors:{} };
+  if (!S.reviews[month].competitors) S.reviews[month].competitors = {};
 
-  save(); refreshCharts(); updateCompTable();
+  S.reviews[month].competitors[name] = {
+    sentiment: parseInt(document.getElementById('cp-sent').value)||0,
+    mentions:  parseInt(document.getElementById('cp-ment').value)||0,
+    activity:  parseInt(document.getElementById('cp-act').value)||0,
+    stars:     parseFloat(document.getElementById('cp-stars').value)||0,
+    promo:     document.getElementById('cp-promo').value.trim(),
+    px:        document.getElementById('cp-px').value.trim()
+  };
 
-  const msg = document.getElementById('cp-saved-msg');
-  msg.textContent = `✓ ${name} data saved`;
+  persist();
+  updateCpTable();
+  refreshCharts();
+  updateCompTable();
+
+  const msg = document.getElementById('cp-save-msg');
+  msg.textContent = `✓ ${name} data saved.`;
   msg.style.display='block';
   setTimeout(()=>msg.style.display='none',3000);
-  addAlert(`${name} data recorded — Sentiment: ${sent}/100`,'neu');
-}
 
-function saveCompAnalysis() {
-  const resp = document.getElementById('cp-ai-resp').value.trim();
-  if (!resp) { alert('Paste Claude.ai response first.'); return; }
-  document.getElementById('cp-ob-body').textContent = resp;
-  document.getElementById('cp-outbox').classList.add('on');
-  S.savedInsights.unshift({id:Date.now(),title:'Competitor Analysis — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved(); addAlert('Competitor analysis saved','pos');
-}
-
-// ══════════════════════════════════════════
-// TREND SAVE
-// ══════════════════════════════════════════
-function saveTrendAnalysis() {
-  const resp = document.getElementById('tr-ai-resp').value.trim();
-  if (!resp) { alert('Paste Claude.ai response first.'); return; }
-  S.lastTrends = document.getElementById('tr-obs').value || resp;
-  S.savedInsights.unshift({id:Date.now(),title:'Trend Analysis — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved();
-  const msg = document.getElementById('tr-saved-msg');
-  msg.textContent='✓ Trend analysis saved'; msg.style.display='block';
-  setTimeout(()=>msg.style.display='none',3000);
-}
-
-// ══════════════════════════════════════════
-// CONTENT STRATEGY
-// ══════════════════════════════════════════
-function saveContentStrategy() {
-  const resp = document.getElementById('cnt-ai-resp').value.trim();
-  if (!resp) { alert('Paste content strategy first.'); return; }
-  S.savedInsights.unshift({id:Date.now(),title:'Content Strategy — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved(); addAlert('Content strategy saved','pos');
-}
-
-function filterPlatformContent(pf) {
-  const full = document.getElementById('cnt-ai-resp').value;
-  if (!full || pf==='all') return;
-  const markers = {instagram:'📸 INSTAGRAM',facebook:'📘 FACEBOOK',tiktok:'🎵 TIKTOK',linkedin:'💼 LINKEDIN'};
-  const nexts   = {instagram:'📘 FACEBOOK',facebook:'🎵 TIKTOK',tiktok:'💼 LINKEDIN',linkedin:'CROSS-PLATFORM'};
-  const start = full.indexOf(markers[pf]);
-  if (start===-1) return;
-  const end = full.indexOf(nexts[pf]);
-  // Show in a temp view — just scroll to section
-  const el = document.getElementById('cnt-ai-resp');
-  el.focus();
-  el.setSelectionRange(start, end===-1?full.length:end);
-}
-
-// ══════════════════════════════════════════
-// REPORTS
-// ══════════════════════════════════════════
-function saveReport() {
-  const resp = document.getElementById('rpt-ai-resp').value.trim();
-  if (!resp) { alert('Paste report first.'); return; }
-  S.savedInsights.unshift({id:Date.now(),title:'Report — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved(); addAlert('Report saved','pos');
-}
-
-// ══════════════════════════════════════════
-// COMPARE
-// ══════════════════════════════════════════
-function populateCompareSelects() {
-  const opts = ['Colombo Court',...S.competitors.map(c=>c.name)];
-  ['cmpA','cmpB'].forEach((id,i) => {
+  // Clear fields for next entry
+  ['cp-sent','cp-ment','cp-act','cp-stars','cp-promo','cp-px'].forEach(id=>{
     const el = document.getElementById(id);
-    if(!el) return;
-    const cur = el.value;
-    el.innerHTML = opts.map(o=>`<option value="${o}">${o}</option>`).join('');
-    el.selectedIndex = cur ? opts.indexOf(cur) : i;
+    if(el) el.value='';
   });
 }
 
-let cmpC = {};
-function runCompare() {
-  const a   = document.getElementById('cmpA').value;
-  const b   = document.getElementById('cmpB').value;
-  const rng = parseInt(document.getElementById('cmpRange').value)||999;
-  if (a===b) { alert('Select two different brands.'); return; }
-
-  const dates = Object.keys(S.scanData).sort().slice(-rng);
-  const gs = brand => dates.map(d => brand==='Colombo Court' ? S.scanData[d]?.brand?.sentiment||null : S.scanData[d]?.competitors?.[brand]?.sentiment||null);
-  const gm = brand => dates.map(d => brand==='Colombo Court' ? S.scanData[d]?.brand?.mentions||null  : S.scanData[d]?.competitors?.[brand]?.mentions||null);
-
-  const lbls = dates.map(d=>d.slice(5));
-  renderCmpLine('cCmpSent',lbls,a,gs(a),b,gs(b),'Sentiment');
-  renderCmpLine('cCmpMent',lbls,a,gm(a),b,gm(b),'Mentions');
-
-  const latA = gs(a).filter(x=>x!==null).pop()||0;
-  const latB = gs(b).filter(x=>x!==null).pop()||0;
-  renderSnapBar('cCmpSnap',a,latA,b,latB);
+function updateCpTable() {
+  const month = document.getElementById('review-month').value || monthStr();
+  const comps = S.reviews[month]?.competitors || {};
+  const tbody = document.getElementById('cp-table-body');
+  if (!tbody) return;
+  const entered = S.competitors.filter(c=>comps[c.name]);
+  if (!entered.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="color:#A0A0B8;text-align:center;padding:12px;">No data entered yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = entered.map(c => {
+    const d = comps[c.name];
+    const col = d.sentiment >= 70 ? '#50D888' : d.sentiment >= 50 ? '#E8C060' : '#FF7070';
+    return `<tr>
+      <td style="font-weight:600;">${c.name}</td>
+      <td style="color:${col};font-weight:700;">${d.sentiment}/100</td>
+      <td>${d.activity}/10</td>
+      <td>${d.stars ? d.stars+'/5' : '—'}</td>
+      <td><span class="badge b-pos">✓ Done</span></td>
+    </tr>`;
+  }).join('');
 }
 
-function renderCmpLine(id,labels,lA,dA,lB,dB,yLabel) {
-  const ctx = document.getElementById(id);
-  if(!ctx) return;
-  if(cmpC[id]) cmpC[id].destroy();
-  cmpC[id] = new Chart(ctx,{
-    type:'line',
-    data:{labels,datasets:[
-      {label:lA,data:dA,borderColor:'rgba(139,26,26,0.9)',backgroundColor:'rgba(139,26,26,0.07)',fill:true,tension:0.4,pointRadius:3,spanGaps:true},
-      {label:lB,data:dB,borderColor:'rgba(196,154,60,0.9)',backgroundColor:'rgba(196,154,60,0.07)',fill:true,tension:0.4,pointRadius:3,spanGaps:true}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#90887E',font:{family:'Rajdhani',size:10}}}},
-      scales:{x:{ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.03)'}},
-              y:{title:{display:true,text:yLabel,color:'#504840',font:{size:9}},ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.04)'}}}}
-  });
-}
-
-function renderSnapBar(id,lA,vA,lB,vB) {
-  const ctx = document.getElementById(id);
-  if(!ctx) return;
-  if(cmpC[id]) cmpC[id].destroy();
-  cmpC[id] = new Chart(ctx,{
-    type:'bar',
-    data:{labels:['Latest Sentiment','Estimated Presence'],
-      datasets:[
-        {label:lA,data:[vA,vA*0.9],backgroundColor:'rgba(139,26,26,0.8)',borderRadius:4},
-        {label:lB,data:[vB,vB*0.9],backgroundColor:'rgba(196,154,60,0.7)',borderRadius:4}
-      ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#90887E',font:{family:'Rajdhani',size:10}}}},
-      scales:{x:{ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.03)'}},
-              y:{max:100,ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.04)'}}}}
-  });
-}
-
-function saveOutput(key, inputId) {
-  const resp = document.getElementById(inputId)?.value?.trim();
-  if (!resp) { alert('Nothing to save.'); return; }
-  S.savedInsights.unshift({id:Date.now(),title:key.charAt(0).toUpperCase()+key.slice(1)+' — '+fmt(today()),content:resp,date:fmt(today()),preview:resp.substring(0,140)+'…'});
-  save(); renderSaved(); alert('✓ Saved.');
-}
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // CHARTS
-// ══════════════════════════════════════════
-function chartOpts(noLegend) {
-  return {responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:!noLegend,labels:{color:'#90887E',font:{family:'Rajdhani',size:9}}}},
+// ════════════════════════════════════════
+function chartOpts(noLegend, horizontal) {
+  return {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:!noLegend,labels:{color:'#B0B0C0',font:{family:'Poppins',size:10}}}},
     scales:{
-      x:{ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.03)'}},
-      y:{ticks:{color:'#504840',font:{family:'Rajdhani',size:9}},grid:{color:'rgba(255,255,255,0.04)'}}
-    }};
+      x:{ticks:{color:'#606070',font:{family:'Poppins',size:9}},grid:{color:'rgba(255,255,255,0.04)'}},
+      y:{ticks:{color:'#606070',font:{family:'Poppins',size:9}},grid:{color:'rgba(255,255,255,0.05)'}},
+      ...(horizontal ? {} : {})
+    },
+    ...(horizontal ? {indexAxis:'y'} : {})
+  };
 }
 
 function initCharts() {
   const all   = ['Colombo Court',...S.competitors.map(c=>c.name)];
   const short = all.map(n=>n.split(' ').slice(0,2).join(' '));
-  const cols  = ['rgba(139,26,26,0.85)','rgba(196,154,60,0.7)','rgba(45,122,79,0.7)','rgba(74,108,168,0.7)','rgba(168,74,74,0.65)','rgba(100,74,168,0.65)','rgba(74,168,140,0.65)'];
+  const cols  = ['rgba(192,40,40,0.85)','rgba(224,176,80,0.7)','rgba(56,168,101,0.7)','rgba(74,128,192,0.7)','rgba(168,74,74,0.65)','rgba(100,74,168,0.65)','rgba(74,168,140,0.65)'];
 
-  S.charts.sent  = new Chart(document.getElementById('cSent'),{type:'bar',data:{labels:short,datasets:[{data:new Array(all.length).fill(0),backgroundColor:cols,borderRadius:3}]},options:{...chartOpts(true)}});
-  S.charts.ment  = new Chart(document.getElementById('cMent'),{type:'bar',data:{labels:short,datasets:[{data:new Array(all.length).fill(0),backgroundColor:cols,borderRadius:3}]},options:{...chartOpts(true)}});
-  S.charts.act   = new Chart(document.getElementById('cAct'), {type:'bar',data:{labels:short,datasets:[{data:new Array(all.length).fill(0),backgroundColor:cols,borderRadius:3}]},options:{...chartOpts(true),indexAxis:'y'}});
-  S.charts.trend = new Chart(document.getElementById('cTrend'),{type:'line',data:{labels:[],datasets:[{label:'Sentiment',data:[],borderColor:'rgba(139,26,26,0.9)',backgroundColor:'rgba(139,26,26,0.07)',fill:true,tension:0.4,pointRadius:3,spanGaps:true}]},options:{...chartOpts(true)}});
+  const mk = (id,type,labels,horiz) => {
+    const ctx = document.getElementById(id);
+    if(!ctx) return null;
+    return new Chart(ctx,{type,data:{labels,datasets:[{data:new Array(labels.length).fill(0),backgroundColor:cols,borderRadius:4}]},options:{...chartOpts(true,horiz)}});
+  };
+
+  S.charts.sent  = mk('cSent','bar',short);
+  S.charts.ment  = mk('cMent','bar',short);
+  S.charts.act   = mk('cAct','bar',short,true);
+  S.charts.compSent = mk('cCompSent','bar',short);
+  S.charts.compAct  = mk('cCompAct','bar',short,true);
+
+  // Trend line
+  const tCtx = document.getElementById('cTrend');
+  if(tCtx) S.charts.trend = new Chart(tCtx,{
+    type:'line',
+    data:{labels:[],datasets:[{label:'Brand Sentiment',data:[],borderColor:'rgba(192,40,40,0.9)',backgroundColor:'rgba(192,40,40,0.08)',fill:true,tension:0.4,pointRadius:4,spanGaps:true}]},
+    options:{...chartOpts(true)}
+  });
 }
 
 function refreshCharts() {
-  const td  = today();
-  const all = ['Colombo Court',...S.competitors.map(c=>c.name)];
+  const months = Object.keys(S.reviews).sort();
+  const latest = months[months.length-1];
+  const all    = ['Colombo Court',...S.competitors.map(c=>c.name)];
 
-  const sentV = all.map(n=>n==='Colombo Court'?S.scanData[td]?.brand?.sentiment||0:S.scanData[td]?.competitors?.[n]?.sentiment||0);
-  const mentV = all.map(n=>n==='Colombo Court'?S.scanData[td]?.brand?.mentions||0:S.scanData[td]?.competitors?.[n]?.mentions||0);
-  const actV  = all.map(n=>n==='Colombo Court'?70:((S.scanData[td]?.competitors?.[n]?.activity||0)*10));
+  const sentV = all.map(n => n==='Colombo Court' ? (S.reviews[latest]?.brand?.sentiment||0) : (S.reviews[latest]?.competitors?.[n]?.sentiment||0));
+  const mentV = all.map(n => n==='Colombo Court' ? (S.reviews[latest]?.brand?.reviews||0)*3 : (S.reviews[latest]?.competitors?.[n]?.mentions||0));
+  const actV  = all.map(n => n==='Colombo Court' ? 7 : (S.reviews[latest]?.competitors?.[n]?.activity||0));
 
-  if(S.charts.sent){S.charts.sent.data.datasets[0].data=sentV;S.charts.sent.update('active');}
-  if(S.charts.ment){S.charts.ment.data.datasets[0].data=mentV;S.charts.ment.update('active');}
-  if(S.charts.act) {S.charts.act.data.datasets[0].data=actV;  S.charts.act.update('active');}
+  const upd = (chart,vals) => { if(chart){chart.data.datasets[0].data=vals;chart.update('active');} };
+  upd(S.charts.sent,sentV);
+  upd(S.charts.ment,mentV);
+  upd(S.charts.act,actV);
+  upd(S.charts.compSent,sentV);
+  upd(S.charts.compAct,actV);
 
-  const dates = Object.keys(S.scanData).sort().slice(-30);
-  const tV = dates.map(d=>S.scanData[d]?.brand?.sentiment||null);
-  const tL = dates.map(d=>d.slice(5));
-  if(S.charts.trend){S.charts.trend.data.labels=tL;S.charts.trend.data.datasets[0].data=tV;S.charts.trend.update('active');}
+  // Trend
+  if(S.charts.trend){
+    S.charts.trend.data.labels = months.map(m=>m.slice(0,7));
+    S.charts.trend.data.datasets[0].data = months.map(m=>S.reviews[m]?.brand?.sentiment||null);
+    S.charts.trend.update('active');
+  }
 }
 
 function updateCompTable() {
-  const td = today();
-  const rows = [{name:'Colombo Court Hotel & Spa',our:true},...S.competitors];
-  document.getElementById('compTableBody').innerHTML = rows.map(r => {
-    const key = r.our?'Colombo Court':r.name;
-    const d   = r.our?S.scanData[td]?.brand:S.scanData[td]?.competitors?.[r.name];
-    const sc  = d?.sentiment;
-    const col = sc?(sc>=70?'var(--green)':sc>=50?'var(--gold)':'var(--red2)'):'inherit';
+  const months = Object.keys(S.reviews).sort();
+  const latest = months[months.length-1];
+  const tbody  = document.getElementById('fullCompTable');
+  if (!tbody) return;
+
+  const rows = [{name:'Colombo Court Hotel & Spa',our:true,threat:''},...S.competitors];
+  tbody.innerHTML = rows.map(r => {
+    const d = r.our ? S.reviews[latest]?.brand : S.reviews[latest]?.competitors?.[r.name];
+    const sent = r.our ? d?.sentiment : d?.sentiment;
+    const col  = sent ? (sent>=70?'#50D888':sent>=50?'#E8C060':'#FF7070') : '#A0A0B8';
     return `<tr class="${r.our?'our':''}">
-      <td style="font-weight:700;">${r.our?'⬡ Colombo Court Hotel & Spa':r.name}</td>
-      <td style="color:${col};font-weight:700;">${sc?sc+'/100':'—'}</td>
-      <td>${d?.mentions||'—'}${d?.mentions?' est.':''}</td>
-      <td>${d?.activity?d.activity+'/10':'—'}</td>
-      <td style="font-size:10px;">${d?'Today '+d.time:'—'}</td>
+      <td style="font-weight:600;">${r.our?'⬡ ':''} ${r.our?'Colombo Court':r.name}</td>
+      <td style="color:${col};font-weight:700;">${sent?sent+'/100':'—'}</td>
+      <td>${r.our?(d?.reviews||'—'):( d?.mentions||'—')}</td>
+      <td>${r.our?'—':(d?.activity?d.activity+'/10':'—')}</td>
+      <td>${d?.stars?d.stars+'/5':'—'}</td>
       <td>${r.our?'<span class="badge b-gld">Our Brand</span>':`<span class="badge ${r.threat==='High'?'b-neg':r.threat==='Medium'?'b-gld':'b-neu'}">${r.threat}</span>`}</td>
     </tr>`;
   }).join('');
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // KPIs & ALERTS
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function updateKPIs() {
-  document.getElementById('k-comp').textContent = S.competitors.length;
-  document.getElementById('k-days').textContent = Object.keys(S.scanData).length;
-  const td = today();
-  const d  = S.scanData[td];
-  if(d?.brand){
-    document.getElementById('k-sent').textContent = d.brand.sentiment||'—';
-    document.getElementById('k-ment').textContent = d.brand.mentions||'—';
+  document.getElementById('k-comp').textContent   = S.competitors.length;
+  document.getElementById('k-months').textContent = Object.keys(S.reviews).length;
+  const months = Object.keys(S.reviews).sort();
+  const latest = months[months.length-1];
+  if (latest && S.reviews[latest]?.brand) {
+    document.getElementById('k-sent').textContent = S.reviews[latest].brand.sentiment || '—';
+    document.getElementById('k-rev').textContent  = S.reviews[latest].brand.reviews   || '—';
   }
 }
 
 function addAlert(text, type) {
   const feed = document.getElementById('alertFeed');
+  const el   = document.createElement('div');
+  el.className = 'aitem fi';
+  const col = type==='pos'?'#50D888':type==='neg'?'#FF8080':'#E8C060';
+  el.innerHTML = `<div class="adot" style="background:${col}"></div><span style="color:#E0E0F0;flex:1;">${text}</span><span style="color:#A0A0B8;font-size:11px;">${nowStr()}</span>`;
   const empty = feed.querySelector('[data-empty]');
   if(empty) empty.remove();
-  const el  = document.createElement('div');
-  el.className = 'aitem';
-  const col = type==='pos'?'var(--green)':type==='neg'?'var(--red2)':'var(--gold)';
-  el.innerHTML = `<div class="adot" style="background:${col}"></div><span style="color:#E0E0F0;flex:1;">${text}</span><span style="color:#A0A0B8;font-family:var(--fm);font-size:10px;">${nowStr()}</span>`;
   feed.prepend(el);
   const items = feed.querySelectorAll('.aitem');
-  if(items.length>12) items[items.length-1].remove();
+  if(items.length>10) items[items.length-1].remove();
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // COMPETITOR LIST
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function renderCompList() {
-  const list = document.getElementById('compList');
-  if(!list) return;
-  const td = today();
-  list.innerHTML = S.competitors.map(c=>{
-    const d = S.scanData[td]?.competitors?.[c.name];
-    const sc = d?.sentiment;
-    return `<div class="ccard">
+  // In review wizard step 3
+  buildCompPerplexityBtns();
+  buildCompSearchLinks();
+  populateCompSelect();
+  updateCpTable();
+}
+
+function renderCompListFull() {
+  const list = document.getElementById('compListFull');
+  if (!list) return;
+  list.innerHTML = S.competitors.map(c=>`
+    <div class="ccard">
       <div class="cavatar">${c.name.charAt(0)}</div>
       <div class="cinfo">
         <div class="cname">${c.name}</div>
-        <div class="cmeta">${c.type}${sc?' · '+sc+'/100':''}</div>
+        <div class="cmeta">${c.type}</div>
       </div>
       <div class="cacts">
         <span class="badge ${c.threat==='High'?'b-neg':c.threat==='Medium'?'b-gld':'b-neu'}">${c.threat}</span>
+        <button class="btn bo bsm" onclick="editComp(${c.id})" title="Edit">✏</button>
         <button class="btn bo bsm" onclick="removeComp(${c.id})" title="Remove">✕</button>
       </div>
-    </div>`;
-  }).join('');
-
-  const sel = document.getElementById('cp-name');
-  if(sel) sel.innerHTML = S.competitors.map(c=>`<option>${c.name}</option>`).join('');
-
-  const ci = document.getElementById('ci-comp-fields');
-  if(ci) ci.innerHTML = S.competitors.map(c=>`
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
-      <span style="flex:1;font-size:12px;color:#E0E0F0;">${c.name}</span>
-      <input type="number" class="ifield" placeholder="Sent/100" min="0" max="100" style="width:80px;" id="cicomp-${c.id}-sent">
-      <input type="number" class="ifield" placeholder="Act 1-10" min="1" max="10" style="width:70px;" id="cicomp-${c.id}-act">
     </div>`).join('');
 }
 
 function addComp() {
   const name  = document.getElementById('nc-name').value.trim();
-  const type  = document.getElementById('nc-type').value.trim()||'Colombo competitor';
+  const type  = document.getElementById('nc-type').value.trim() || 'Colombo competitor';
   const threat= document.getElementById('nc-threat').value;
-  if(!name){alert('Enter a name.');return;}
+  if (!name) { alert('Enter a name.'); return; }
   S.competitors.push({id:Date.now(),name,type,threat});
-  save(); renderCompList(); populateCompareSelects();
+  persist();
+  renderAll();
   closeM('addCompM');
   document.getElementById('nc-name').value='';
   document.getElementById('nc-type').value='';
 }
 
 function removeComp(id) {
-  if(!confirm('Remove from watchlist?')) return;
+  if (!confirm('Remove from watchlist?')) return;
   S.competitors = S.competitors.filter(c=>c.id!==id);
-  save(); renderCompList(); populateCompareSelects(); updateCompTable();
+  persist(); renderAll();
 }
 
-// ══════════════════════════════════════════
+function editComp(id) {
+  const c = S.competitors.find(x=>x.id===id);
+  if (!c) return;
+  document.getElementById('nc-name').value  = c.name;
+  document.getElementById('nc-type').value  = c.type;
+  document.getElementById('nc-threat').value= c.threat;
+  openM('addCompM');
+  // On next add, replace existing
+  document.querySelector('#addCompM .btn.br').onclick = () => {
+    c.name   = document.getElementById('nc-name').value.trim()  || c.name;
+    c.type   = document.getElementById('nc-type').value.trim()  || c.type;
+    c.threat = document.getElementById('nc-threat').value;
+    persist(); renderAll(); closeM('addCompM');
+    document.querySelector('#addCompM .btn.br').onclick = addComp;
+  };
+}
+
+// ════════════════════════════════════════
 // HISTORY
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function renderHistory() {
   const list = document.getElementById('histList');
-  if(!list) return;
-  const dates = Object.keys(S.scanData).sort().reverse();
-  if(!dates.length){
+  if (!list) return;
+  const months = Object.keys(S.reviews).sort().reverse();
+  if (!months.length) {
     list.innerHTML='<div style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">No history yet.</div>';
     return;
   }
-  list.innerHTML = dates.map(d=>{
-    const rec = S.scanData[d];
-    const sc  = rec.brand?.sentiment;
-    const nC  = Object.keys(rec.competitors||{}).length;
-    const col = sc?(sc>=70?'var(--green)':sc>=50?'var(--gold)':'var(--red2)'):'#A0A0B8';
-    return `<div class="hitem" onclick="loadHist('${d}')">
-      <div class="hdate">${fmt(d)}</div>
+  list.innerHTML = months.map(m => {
+    const r   = S.reviews[m];
+    const sc  = r.brand?.sentiment;
+    const col = sc ? (sc>=70?'#50D888':sc>=50?'#E8C060':'#FF7070') : '#A0A0B8';
+    const nC  = Object.keys(r.competitors||{}).length;
+    return `<div class="hitem" onclick="loadHistory('${m}')">
+      <div class="hmonth">${fmtMonth(m)}</div>
       <div style="font-weight:700;color:${col};">${sc?sc+'/100':'—'}</div>
-      <div style="font-size:11px;color:#A0A0B8;flex:1;">${nC} competitor${nC!==1?'s':''}</div>
-      <span class="badge ${rec.brand?'b-pos':'b-neu'}">${rec.brand?'✓':'—'}</span>
+      <div style="font-size:11px;color:#B0B0C0;flex:1;">${nC} competitor${nC!==1?'s':''}</div>
+      <span class="badge ${r.report?'b-pos':'b-neu'}">${r.report?'✓ Report':'No report'}</span>
     </div>`;
   }).join('');
 }
 
-function loadHist(date) {
+function loadHistory(month) {
   document.querySelectorAll('.hitem').forEach(i=>i.classList.remove('sel'));
   event.currentTarget.classList.add('sel');
-  const rec = S.scanData[date];
-  if(!rec) return;
-
-  const compRows = Object.entries(rec.competitors||{}).map(([n,v])=>
-    `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bord);font-size:12px;">
+  const r = S.reviews[month];
+  if (!r) return;
+  const compRows = Object.entries(r.competitors||{}).map(([n,v])=>
+    `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1e1e26;font-size:12px;">
       <span style="color:#E0E0F0;">${n}</span>
-      <span style="color:var(--gold);font-weight:700;">${v.sentiment}/100</span>
+      <span style="color:#E8C060;font-weight:600;">${v.sentiment}/100 · ${v.activity}/10 activity</span>
     </div>`).join('');
 
   document.getElementById('histDetailBody').innerHTML = `
-    <div style="margin-bottom:12px;">
-      <div style="font-family:var(--fd);font-size:17px;color:var(--w1);margin-bottom:3px;">${fmt(date)}</div>
-      <div style="font-size:11px;color:#A0A0B8;">${rec.brand?'Recorded at '+rec.brand.time:'No brand data'}</div>
+    <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">${fmtMonth(month)}</div>
+    <div style="font-size:11px;color:#B0B0C0;margin-bottom:14px;">Saved: ${r.savedAt?fmtDate(r.savedAt.split('T')[0]):'Unknown'}</div>
+    <div style="background:var(--s2);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C0C0D0;margin-bottom:6px;">Colombo Court</div>
+      <div style="font-size:28px;font-weight:700;color:#FF7070;">${r.brand?.sentiment||'—'}<span style="font-size:14px;color:#A0A0B8;">/100</span></div>
+      <div style="font-size:12px;color:#B0B0C0;margin-top:4px;">${r.brand?.reviews||'—'} reviews · ${r.brand?.positive||'?'}% positive · ⭐ ${r.brand?.stars||'?'}</div>
     </div>
-    <div style="background:var(--s2);border-radius:6px;padding:12px;margin-bottom:10px;">
-      <div class="klbl">Colombo Court</div>
-      <div style="font-family:var(--fd);font-size:28px;color:var(--red2);">${rec.brand?.sentiment||'—'}<span style="font-size:14px;color:#A0A0B8;">/100</span></div>
-      <div style="font-size:11px;color:#A0A0B8;margin-top:3px;">${rec.brand?.mentions||'—'} mentions · ${rec.brand?.positive||'?'}% positive</div>
-    </div>
-    ${compRows?`<div class="klbl" style="margin-bottom:6px;">Competitors</div>${compRows}`:''}
-    ${rec.aiResponse?`<button class="btn bo bsm" style="margin-top:10px;" onclick="loadHistAI('${date}')">View AI Analysis</button>`:''}
+    ${compRows ? `<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C0C0D0;margin-bottom:8px;">Competitors</div>${compRows}` : ''}
+    ${r.report ? `<button class="btn bo bsm" style="margin-top:12px;width:100%;justify-content:center;" onclick="loadHistReport('${month}')">View Full Report</button>` : ''}
   `;
-
-  document.getElementById('histDetail').classList.add('rl');
 }
 
-function loadHistAI(date) {
-  const resp = S.scanData[date]?.aiResponse;
-  if(!resp){alert('No AI analysis saved for this date.');return;}
-  document.getElementById('hist-ob-body').textContent = resp;
-  document.getElementById('hist-outbox').classList.add('on');
+function loadHistReport(month) {
+  const r = S.reviews[month];
+  if (!r?.report) return;
+  document.getElementById('reportBody').textContent = r.report;
+  nav('report');
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
+// REPORT PAGE
+// ════════════════════════════════════════
+function renderReportHistory() {
+  const list = document.getElementById('reportHistList');
+  if (!list) return;
+  const months = Object.keys(S.reviews).filter(m=>S.reviews[m].report).sort().reverse();
+  if (!months.length) {
+    list.innerHTML='<div style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">No reports saved yet.</div>';
+    return;
+  }
+  list.innerHTML = months.map(m=>`
+    <div class="hitem" onclick="loadHistReport('${m}')">
+      <div class="hmonth">${fmtMonth(m)}</div>
+      <span class="badge b-pos">Report</span>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════
 // SAVED INSIGHTS
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function renderSaved() {
   const list = document.getElementById('savedList');
-  if(!list) return;
-  if(!S.savedInsights.length){
+  if (!list) return;
+  if (!S.savedInsights.length) {
     list.innerHTML='<div style="color:#A0A0B8;font-size:12px;padding:10px 0;text-align:center;">No saved insights yet.</div>';
     return;
   }
@@ -2087,7 +1673,7 @@ function renderSaved() {
         <div class="si-title">${i.title}</div>
         <div style="display:flex;gap:6px;align-items:center;">
           <div class="si-date">${i.date}</div>
-          <button class="btn bo bsm" onclick="event.stopPropagation();delSaved(${i.id})" style="padding:2px 6px;">✕</button>
+          <button class="btn bo bsm" onclick="event.stopPropagation();delSaved(${i.id})" style="padding:2px 7px;">✕</button>
         </div>
       </div>
       <div class="si-prev">${i.preview}</div>
@@ -2096,7 +1682,7 @@ function renderSaved() {
 
 function viewSaved(id) {
   const item = S.savedInsights.find(i=>i.id===id);
-  if(!item) return;
+  if (!item) return;
   document.getElementById('vm-title').textContent = item.title;
   document.getElementById('vm-date').textContent  = 'Saved: '+item.date;
   document.getElementById('vm-body').textContent  = item.content;
@@ -2105,275 +1691,193 @@ function viewSaved(id) {
 
 function delSaved(id) {
   S.savedInsights = S.savedInsights.filter(i=>i.id!==id);
-  save(); renderSaved();
+  persist(); renderSaved();
 }
 
 function clearSaved() {
-  if(!confirm('Delete all saved insights?')) return;
-  S.savedInsights=[]; save(); renderSaved();
+  if (!confirm('Delete all saved insights?')) return;
+  S.savedInsights=[]; persist(); renderSaved();
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // STRATEGY BRIEF
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function saveStrat() {
   const val = document.getElementById('stratInput').value.trim();
-  if(!val){alert('Type your strategy brief first.');return;}
-  S.stratBrief = val; save();
-  const el = document.getElementById('strat-saved');
-  el.style.display='block'; setTimeout(()=>el.style.display='none',3000);
+  if (!val) { alert('Enter your strategy brief.'); return; }
+  S.stratBrief = val; persist();
+  const el = document.getElementById('strat-msg');
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none',4000);
 }
 
 function loadStratUI() {
-  if(S.stratBrief) document.getElementById('stratInput').value = S.stratBrief;
+  if (S.stratBrief) document.getElementById('stratInput').value = S.stratBrief;
+  const cb = document.getElementById('contentBody');
+  const months = Object.keys(S.reviews).sort();
+  const latest = months[months.length-1];
+  if (latest && S.reviews[latest]?.content && cb) {
+    cb.textContent = S.reviews[latest].content;
+  }
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // SETTINGS & WEBHOOK
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function loadSettingsUI() {
   const wh = document.getElementById('cfg-webhook');
   const ht = document.getElementById('cfg-hotel');
-  if(wh) wh.value = S.settings.webhook || '';
-  if(ht) ht.value = S.settings.hotel   || 'Colombo Court Hotel and Spa';
+  const ct = document.getElementById('cfg-city');
+  if (wh) wh.value = S.settings.webhook||'';
+  if (ht) ht.value = S.settings.hotel||'Colombo Court Hotel and Spa';
+  if (ct) ct.value = S.settings.city||'Colombo, Sri Lanka';
   updateSheetsStatus();
 }
 
 function saveSettings() {
-  S.settings.webhook = document.getElementById('cfg-webhook')?.value.trim() || '';
-  S.settings.hotel   = document.getElementById('cfg-hotel')?.value.trim()   || 'Colombo Court Hotel and Spa';
-  save();
-  updateSheetsStatus();
+  S.settings.webhook = document.getElementById('cfg-webhook')?.value.trim()||'';
+  S.settings.hotel   = document.getElementById('cfg-hotel')?.value.trim()||'Colombo Court Hotel and Spa';
+  S.settings.city    = document.getElementById('cfg-city')?.value.trim()||'Colombo, Sri Lanka';
+  persist(); updateSheetsStatus();
   const el = document.getElementById('cfg-msg');
-  if(el){ el.textContent='✓ Settings saved.'; el.style.color='#60E890'; setTimeout(()=>el.textContent='',3000); }
+  if(el){el.textContent='✓ Settings saved.';el.style.color='#50D888';setTimeout(()=>el.textContent='',3000);}
 }
 
 function updateSheetsStatus() {
   const el = document.getElementById('sheetsStatus');
-  if(!el) return;
-  if(S.settings.webhook) {
-    el.innerHTML = `<div class="sheets-status sheets-ok">✓ Webhook configured — data will sync to Google Sheets on every save</div>`;
-  } else {
-    el.innerHTML = `<div class="sheets-status sheets-no">⚠ Webhook not set — data saved in browser only. Follow the steps below to connect Google Sheets.</div>`;
-  }
+  if (!el) return;
+  el.innerHTML = S.settings.webhook
+    ? `<div class="sheets-status sheets-ok">✓ Webhook configured — data syncs to Google Sheets on every save</div>`
+    : `<div class="sheets-status sheets-no">⚠ Webhook not set — data saved in browser only. Follow steps below to connect.</div>`;
 }
 
-async function testSheetsConnection() {
-  const webhook = S.settings.webhook || document.getElementById('cfg-webhook')?.value.trim();
-  if(!webhook) {
-    alert('Paste your Google Apps Script webhook URL first.');
-    return;
-  }
+async function testConnection() {
+  const wh = S.settings.webhook || document.getElementById('cfg-webhook')?.value.trim();
+  if (!wh) { alert('Enter your webhook URL first.'); return; }
   const el = document.getElementById('cfg-msg');
-  if(el){ el.textContent='Testing connection…'; el.style.color='#E8C060'; }
+  if(el){el.textContent='Testing connection…';el.style.color='#E8C060';}
   try {
-    // Use a GET ping — Apps Script handles GET with ?action=ping
-    const url = webhook + (webhook.includes('?') ? '&' : '?') + 'action=ping';
+    const url = wh+(wh.includes('?')?'&':'?')+'action=ping';
     const r   = await fetch(url);
     const d   = await r.json();
-    if(d.status === 'ok') {
-      if(el){ el.textContent='✓ Connection successful! Google Sheets is ready.'; el.style.color='#60E890'; }
-      // Save the webhook if it wasn't saved yet
-      S.settings.webhook = webhook;
-      save(); updateSheetsStatus();
+    if(d.status==='ok'){
+      if(el){el.textContent='✓ Connection successful! Google Sheets is ready.';el.style.color='#50D888';}
+      S.settings.webhook=wh; persist(); updateSheetsStatus();
     } else {
-      if(el){ el.textContent='✗ Webhook responded but returned an error: ' + (d.message||'unknown'); el.style.color='#FF8080'; }
+      if(el){el.textContent='✗ Webhook error: '+(d.message||'unknown');el.style.color='#FF8080';}
     }
   } catch(e) {
-    if(el){ el.textContent='✗ Could not reach the webhook. Make sure you deployed as "Anyone" and copied the URL correctly.'; el.style.color='#FF8080'; }
+    if(el){el.textContent='✗ Could not reach webhook. Check URL and deployment settings.';el.style.color='#FF8080';}
   }
 }
 
-// ── Send data to Google Sheets via webhook ─────────────────────
-async function writeToSheets(date) {
-  if(!S.settings.webhook) return;
-  const td = S.scanData[date];
-  if(!td || !td.brand) return;
-
-  const webhook = S.settings.webhook;
-
+async function writeToSheets(month) {
+  if (!S.settings.webhook) return;
+  const r = S.reviews[month];
+  if (!r?.brand) return;
   try {
-    // Write brand scan
-    await postToWebhook(webhook, {
-      type:       'daily_scan',
-      date:       date,
-      time:       td.brand.time       || '',
-      brand:      'Colombo Court Hotel and Spa',
-      sentiment:  td.brand.sentiment  || '',
-      mentions:   td.brand.mentions   || '',
-      positive:   td.brand.positive   || '',
-      negative:   td.brand.negative   || '',
-      reviews:    td.brand.reviews    || '',
-      social:     td.brand.social     || '',
-      trends:     td.trends           || '',
-      property:   td.property         || '',
-      aiResponse: td.aiResponse       || ''
-    });
-
-    // Write each competitor
-    for(const [name, v] of Object.entries(td.competitors || {})) {
-      await postToWebhook(webhook, {
-        type:       'competitor',
-        date:       date,
-        time:       v.time      || '',
-        competitor: name,
-        sentiment:  v.sentiment || '',
-        mentions:   v.mentions  || '',
-        activity:   v.activity  || '',
-        notes:      v.notes     || ''
-      });
+    await postWH({ type:'daily_scan', date:month, time:nowStr(), brand:'Colombo Court Hotel and Spa',
+      sentiment:r.brand.sentiment, mentions:r.brand.reviews*3,
+      positive:r.brand.positive, negative:r.brand.negative,
+      reviews:r.brand.reviewText?.substring(0,400), social:r.brand.social?.substring(0,300),
+      trends:r.trends?.substring(0,300), aiResponse:r.report?.substring(0,600) });
+    for(const [name,v] of Object.entries(r.competitors||{})) {
+      await postWH({ type:'competitor', date:month, time:nowStr(), competitor:name,
+        sentiment:v.sentiment, mentions:v.mentions, activity:v.activity, notes:v.promo?.substring(0,300) });
     }
-
-    addAlert('✓ Data synced to Google Sheets', 'pos');
-
-  } catch(e) {
-    console.warn('Webhook write failed:', e);
-    addAlert('⚠ Google Sheets sync failed — data saved locally', 'neg');
-  }
+    addAlert('Data synced to Google Sheets','pos');
+  } catch(e){ console.warn('Sheets sync failed:',e); }
 }
 
-// ── POST helper ────────────────────────────────────────────────
-async function postToWebhook(url, data) {
-  const r = await fetch(url, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(data)
-  });
-  return r.json();
+async function postWH(data) {
+  return fetch(S.settings.webhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(r=>r.json());
 }
 
-// ── Sync saved insight to Sheets ───────────────────────────────
-async function syncInsightToSheets(insight) {
-  if(!S.settings.webhook) return;
-  try {
-    await postToWebhook(S.settings.webhook, {
-      type:     'insight',
-      date:     insight.date,
-      title:    insight.title,
-      category: insight.title.split('—')[0].trim(),
-      content:  insight.content
-    });
-  } catch(e) { console.warn('Insight sync failed:', e); }
-}
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // NOTIFICATIONS
-// ══════════════════════════════════════════
-function requestNotifPermission() {
-  if(!('Notification' in window)){alert('Browser notifications not supported.');return;}
+// ════════════════════════════════════════
+function requestNotif() {
+  if(!('Notification' in window)){alert('Notifications not supported in this browser.');return;}
   Notification.requestPermission().then(p=>{
-    const el = document.getElementById('notif-msg');
+    const el=document.getElementById('notif-msg');
     if(p==='granted'){
-      if(el) el.textContent='✓ Reminders enabled! You\'ll get an 8:00 AM check-in reminder daily.';
+      if(el) el.textContent='✓ Notifications enabled! You can set a custom reminder.';
       localStorage.setItem('cc_notif','granted');
-      scheduleNotification();
     } else {
-      if(el) el.textContent='Notifications blocked. Enable in browser settings.';
+      if(el) el.textContent='Notifications blocked — enable in browser settings.';
     }
   });
 }
 
-function scheduleNotification() {
-  if(localStorage.getItem('cc_notif')!=='granted') return;
-  if(!('Notification' in window)) return;
-  const now = new Date();
-  const next8 = new Date(now);
-  next8.setHours(8,0,0,0);
-  if(now.getHours()>=8) next8.setDate(next8.getDate()+1);
-  const ms = next8.getTime() - now.getTime();
-  setTimeout(()=>{
-    if(Notification.permission==='granted'){
-      new Notification('☕ Colombo Court — Daily Check-in',{
-        body:'Good morning! Time for your 10-minute intelligence check-in.',
-        icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%238B1A1A" rx="4"/><text x="16" y="22" font-size="18" text-anchor="middle" fill="white">C</text></svg>'
-      });
-    }
-    scheduleNotification();
-  }, ms);
-}
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // EXPORT
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function exportExcel() {
   if(!window.XLSX){alert('Export library not loaded.');return;}
   const wb = XLSX.utils.book_new();
 
-  const scanRows = [['Date','Time','Sentiment','Mentions','Positive%','Negative%','Trend Notes']];
-  Object.keys(S.scanData).sort().forEach(d=>{
-    const r=S.scanData[d];
-    scanRows.push([d,r.brand?.time||'',r.brand?.sentiment||'',r.brand?.mentions||'',r.brand?.positive||'',r.brand?.negative||'',r.trends||'']);
+  const mRows = [['Month','Sentiment','Reviews','Positive%','Negative%','Stars','TripAdvisor']];
+  Object.keys(S.reviews).sort().forEach(m=>{
+    const b=S.reviews[m].brand||{};
+    mRows.push([m,b.sentiment||'',b.reviews||'',b.positive||'',b.negative||'',b.stars||'',b.tripadvisor||'']);
   });
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(scanRows),'Daily_Brand_Scans');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(mRows),'Monthly_Brand');
 
-  const compRows=[['Date','Competitor','Sentiment','Mentions','Activity','Notes']];
-  Object.keys(S.scanData).sort().forEach(d=>{
-    Object.entries(S.scanData[d].competitors||{}).forEach(([n,v])=>{
-      compRows.push([d,n,v.sentiment||'',v.mentions||'',v.activity||'',v.notes||'']);
+  const cRows=[['Month','Competitor','Sentiment','Mentions','Activity','Stars','Promotions']];
+  Object.keys(S.reviews).sort().forEach(m=>{
+    Object.entries(S.reviews[m].competitors||{}).forEach(([n,v])=>{
+      cRows.push([m,n,v.sentiment||'',v.mentions||'',v.activity||'',v.stars||'',v.promo||'']);
     });
   });
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(compRows),'Competitor_Scans');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cRows),'Competitor_Data');
 
-  const insRows=[['Date','Title','Preview']];
-  S.savedInsights.forEach(i=>insRows.push([i.date,i.title,i.preview]));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(insRows),'Saved_Insights');
+  const iRows=[['Date','Title','Preview']];
+  S.savedInsights.forEach(i=>iRows.push([i.date,i.title,i.preview]));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(iRows),'Saved_Insights');
 
-  const cList=[['Name','Type','Threat']];
-  S.competitors.forEach(c=>cList.push([c.name,c.type,c.threat]));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cList),'Competitor_Watchlist');
+  const wList=[['Name','Type','Threat']];
+  S.competitors.forEach(c=>wList.push([c.name,c.type,c.threat]));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(wList),'Competitor_Watchlist');
 
-  XLSX.writeFile(wb,`colombo-court-data-${today()}.xlsx`);
+  XLSX.writeFile(wb,`colombo-court-data-${todayStr()}.xlsx`);
 }
 
 function exportHTMLReport() {
-  const body = document.getElementById('rpt-ai-resp')?.value;
-  if(!body){alert('Paste a report first.');return;}
+  const body = document.getElementById('reportBody')?.textContent;
+  if(!body||body.includes('Select a month')){alert('Select a report first from the Reports tab.');return;}
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Colombo Court — Report</title>
 <style>body{font-family:Georgia,serif;max-width:820px;margin:0 auto;padding:48px;color:#1a1a1a;line-height:1.85;}
-h1{font-size:20px;color:#8B1A1A;border-bottom:2px solid #8B1A1A;padding-bottom:8px;}
-.meta{color:#666;font-size:13px;margin-bottom:32px;}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;}
+h1{font-size:20px;color:#9B2020;border-bottom:2px solid #9B2020;padding-bottom:8px;}
+.meta{color:#666;font-size:13px;margin-bottom:32px;}pre{white-space:pre-wrap;font-size:14px;font-family:Georgia,serif;}
 .footer{margin-top:40px;padding-top:14px;border-top:1px solid #ddd;font-size:12px;color:#aaa;}
 @media print{body{padding:24px;}}</style></head>
-<body><h1>Colombo Court Hotel & Spa — Marketing Intelligence Report</h1>
-<div class="meta">Generated: ${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} | Social Intelligence Hub v4</div>
+<body><h1>Colombo Court Hotel & Spa — Monthly Marketing Intelligence Report</h1>
+<div class="meta">Generated: ${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} | Created by Shazwan Yoonus</div>
 <pre>${body}</pre>
-<div class="footer">Confidential — Colombo Court Hotel & Spa Marketing Department</div></body></html>`;
+<div class="footer">Confidential — Colombo Court Hotel & Spa Marketing Department · Created by Shazwan Yoonus</div>
+</body></html>`;
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
-  a.download=`colombo-court-report-${today()}.html`;
+  a.download=`colombo-court-report-${todayStr()}.html`;
   a.click();
 }
 
-// ══════════════════════════════════════════
-// MONTH SELECT
-// ══════════════════════════════════════════
-function populateMonthSelect() {
-  const sel = document.getElementById('rpt-month');
-  if(!sel) return;
-  const months=[];
-  const now=new Date();
-  for(let i=0;i<12;i++){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    months.push({value:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,label:d.toLocaleDateString('en-GB',{month:'long',year:'numeric'})});
-  }
-  sel.innerHTML=months.map(m=>`<option value="${m.value}">${m.label}</option>`).join('');
-}
-
-// ══════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════
-function openM(id)  { document.getElementById(id)?.classList.add('on'); }
-function closeM(id) { document.getElementById(id)?.classList.remove('on'); }
+// ════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════
+function openM(id) { document.getElementById(id)?.classList.add('on'); }
+function closeM(id){ document.getElementById(id)?.classList.remove('on'); }
 
 function copyEl(id) {
-  const text = document.getElementById(id)?.value || document.getElementById(id)?.textContent;
+  const el = document.getElementById(id);
+  const text = el?.value || el?.textContent;
   if(!text) return;
   navigator.clipboard.writeText(text).then(()=>alert('✓ Copied!')).catch(()=>alert('Copy failed.'));
 }
 
 function clearAll() {
   if(!confirm('⚠️ Delete ALL local data? This cannot be undone.')) return;
-  localStorage.removeItem('cc_v4'); location.reload();
+  localStorage.removeItem('cc_monthly'); location.reload();
 }
 
 document.querySelectorAll('.mov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
