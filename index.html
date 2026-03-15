@@ -1043,22 +1043,45 @@ body::after{content:'';position:fixed;top:-80px;right:-80px;width:420px;height:4
   <div class="g2">
     <div>
       <div class="card rl">
-        <div class="ctitle">Google Sheets Integration</div>
+        <div class="ctitle">Google Sheets — Webhook Setup</div>
         <div id="sheetsStatus"></div>
-        <p style="font-size:12px;color:#C0C0D0;margin-bottom:12px;line-height:1.7;">Connect your Google Sheet for permanent data storage. See README.md for setup steps.</p>
-        <div class="igrp" style="margin-bottom:9px;">
-          <label class="lbl">Google Sheet ID</label>
-          <input type="text" class="ifield" id="cfg-sheet" placeholder="Paste from your Sheet URL">
+
+        <!-- Step by step instructions -->
+        <div style="background:var(--s2);border-radius:6px;padding:14px;margin-bottom:14px;">
+          <div style="font-size:12px;font-weight:700;color:#E8C060;margin-bottom:10px;letter-spacing:0.05em;">HOW TO SET UP (5 MINUTES)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
+              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</span>
+              <span>Open your Google Sheet → click <strong style="color:#fff;">Extensions</strong> → <strong style="color:#fff;">Apps Script</strong></span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
+              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</span>
+              <span>Delete everything in the editor. Paste the full contents of <strong style="color:#fff;">google-apps-script.gs</strong> file you downloaded</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
+              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</span>
+              <span>Click <strong style="color:#fff;">Save</strong> (floppy disk) → then click <strong style="color:#fff;">Deploy</strong> → <strong style="color:#fff;">New Deployment</strong></span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
+              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</span>
+              <span>Set <strong style="color:#fff;">Execute as: Me</strong> and <strong style="color:#fff;">Who has access: Anyone</strong> → click <strong style="color:#fff;">Deploy</strong></span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#C8C8D8;line-height:1.6;">
+              <span style="background:var(--red2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</span>
+              <span>Copy the <strong style="color:#fff;">Web App URL</strong> → paste it below → click Test Connection</span>
+            </div>
+          </div>
         </div>
-        <div class="igrp" style="margin-bottom:9px;">
-          <label class="lbl">Google API Key</label>
-          <input type="password" class="ifield" id="cfg-gkey" placeholder="Your Google API key">
+
+        <div class="igrp" style="margin-bottom:12px;">
+          <label class="lbl">Webhook URL (from Google Apps Script Deploy)</label>
+          <input type="text" class="ifield" id="cfg-webhook" placeholder="https://script.google.com/macros/s/XXXXX/exec">
         </div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;">
-          <button class="btn br bsm" onclick="saveSettings()">Save & Test</button>
+          <button class="btn br bsm" onclick="saveSettings()">Save</button>
           <button class="btn bgr bsm" onclick="testSheetsConnection()">Test Connection</button>
         </div>
-        <div id="cfg-msg" style="font-size:11px;margin-top:6px;"></div>
+        <div id="cfg-msg" style="font-size:12px;font-weight:500;margin-top:8px;"></div>
       </div>
       <div class="card">
         <div class="ctitle">Morning Reminder</div>
@@ -1140,7 +1163,7 @@ const S = {
   savedInsights: [],
   stratBrief:    '',
   lastTrends:    '',
-  settings: { sheetId:'', gKey:'', hotel:'Colombo Court Hotel and Spa' },
+  settings: { webhook:'', hotel:'Colombo Court Hotel and Spa' },
   charts:        {},
   cmpCharts:     {}
 };
@@ -1155,7 +1178,7 @@ function load() {
       if (p.savedInsights)  S.savedInsights  = p.savedInsights;
       if (p.stratBrief)     S.stratBrief     = p.stratBrief;
       if (p.lastTrends)     S.lastTrends     = p.lastTrends;
-      if (p.settings)       S.settings       = {...S.settings,...p.settings};
+      if (p.settings)       S.settings = { webhook:'', hotel:'Colombo Court Hotel and Spa', ...p.settings };
     }
   } catch(e){}
 }
@@ -2106,70 +2129,131 @@ function loadStratUI() {
 }
 
 // ══════════════════════════════════════════
-// SETTINGS & SHEETS
+// SETTINGS & WEBHOOK
 // ══════════════════════════════════════════
 function loadSettingsUI() {
-  if(document.getElementById('cfg-sheet')) document.getElementById('cfg-sheet').value = S.settings.sheetId||'';
-  if(document.getElementById('cfg-gkey'))  document.getElementById('cfg-gkey').value  = S.settings.gKey||'';
-  if(document.getElementById('cfg-hotel')) document.getElementById('cfg-hotel').value = S.settings.hotel||'Colombo Court Hotel and Spa';
+  const wh = document.getElementById('cfg-webhook');
+  const ht = document.getElementById('cfg-hotel');
+  if(wh) wh.value = S.settings.webhook || '';
+  if(ht) ht.value = S.settings.hotel   || 'Colombo Court Hotel and Spa';
   updateSheetsStatus();
 }
 
 function saveSettings() {
-  S.settings.sheetId = document.getElementById('cfg-sheet')?.value||'';
-  S.settings.gKey    = document.getElementById('cfg-gkey')?.value||'';
-  S.settings.hotel   = document.getElementById('cfg-hotel')?.value||'Colombo Court Hotel and Spa';
-  save(); updateSheetsStatus();
+  S.settings.webhook = document.getElementById('cfg-webhook')?.value.trim() || '';
+  S.settings.hotel   = document.getElementById('cfg-hotel')?.value.trim()   || 'Colombo Court Hotel and Spa';
+  save();
+  updateSheetsStatus();
   const el = document.getElementById('cfg-msg');
-  if(el){el.textContent='✓ Settings saved.';el.style.color='var(--green)';setTimeout(()=>el.textContent='',3000);}
+  if(el){ el.textContent='✓ Settings saved.'; el.style.color='#60E890'; setTimeout(()=>el.textContent='',3000); }
 }
 
 function updateSheetsStatus() {
   const el = document.getElementById('sheetsStatus');
   if(!el) return;
-  if(S.settings.sheetId && S.settings.gKey) {
-    el.innerHTML = `<div class="sheets-status sheets-ok">✓ Google Sheets connected — data syncing</div>`;
+  if(S.settings.webhook) {
+    el.innerHTML = `<div class="sheets-status sheets-ok">✓ Webhook configured — data will sync to Google Sheets on every save</div>`;
   } else {
-    el.innerHTML = `<div class="sheets-status sheets-no">⚠ Google Sheets not configured — data in browser only. See README.md to connect.</div>`;
+    el.innerHTML = `<div class="sheets-status sheets-no">⚠ Webhook not set — data saved in browser only. Follow the steps below to connect Google Sheets.</div>`;
   }
 }
 
 async function testSheetsConnection() {
-  if(!S.settings.sheetId || !S.settings.gKey){alert('Enter Sheet ID and API Key first.');return;}
+  const webhook = S.settings.webhook || document.getElementById('cfg-webhook')?.value.trim();
+  if(!webhook) {
+    alert('Paste your Google Apps Script webhook URL first.');
+    return;
+  }
   const el = document.getElementById('cfg-msg');
-  if(el){el.textContent='Testing…';el.style.color='var(--gold)';}
+  if(el){ el.textContent='Testing connection…'; el.style.color='#E8C060'; }
   try {
-    const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${S.settings.sheetId}?key=${S.settings.gKey}`);
-    if(r.ok){
-      if(el){el.textContent='✓ Connection successful!';el.style.color='var(--green)';}
+    // Use a GET ping — Apps Script handles GET with ?action=ping
+    const url = webhook + (webhook.includes('?') ? '&' : '?') + 'action=ping';
+    const r   = await fetch(url);
+    const d   = await r.json();
+    if(d.status === 'ok') {
+      if(el){ el.textContent='✓ Connection successful! Google Sheets is ready.'; el.style.color='#60E890'; }
+      // Save the webhook if it wasn't saved yet
+      S.settings.webhook = webhook;
+      save(); updateSheetsStatus();
     } else {
-      if(el){el.textContent='✗ Connection failed — check your Sheet ID and API Key.';el.style.color='var(--red2)';}
+      if(el){ el.textContent='✗ Webhook responded but returned an error: ' + (d.message||'unknown'); el.style.color='#FF8080'; }
     }
-  } catch(e){
-    if(el){el.textContent='✗ Network error.';el.style.color='var(--red2)';}
+  } catch(e) {
+    if(el){ el.textContent='✗ Could not reach the webhook. Make sure you deployed as "Anyone" and copied the URL correctly.'; el.style.color='#FF8080'; }
   }
 }
 
+// ── Send data to Google Sheets via webhook ─────────────────────
 async function writeToSheets(date) {
-  if(!S.settings.sheetId || !S.settings.gKey) return;
-  const td  = S.scanData[date];
-  if(!td) return;
+  if(!S.settings.webhook) return;
+  const td = S.scanData[date];
+  if(!td || !td.brand) return;
+
+  const webhook = S.settings.webhook;
+
   try {
-    const base = `https://sheets.googleapis.com/v4/spreadsheets/${S.settings.sheetId}/values`;
-    const brandRow = [[date, td.brand?.time||'', 'Colombo Court Hotel and Spa', td.brand?.sentiment||'', td.brand?.mentions||'', td.brand?.positive||'', td.brand?.negative||'', (td.aiResponse||'').substring(0,500)]];
-    await fetch(`${base}/Daily_Scans!A:H:append?valueInputOption=RAW&key=${S.settings.gKey}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({values:brandRow})
+    // Write brand scan
+    await postToWebhook(webhook, {
+      type:       'daily_scan',
+      date:       date,
+      time:       td.brand.time       || '',
+      brand:      'Colombo Court Hotel and Spa',
+      sentiment:  td.brand.sentiment  || '',
+      mentions:   td.brand.mentions   || '',
+      positive:   td.brand.positive   || '',
+      negative:   td.brand.negative   || '',
+      reviews:    td.brand.reviews    || '',
+      social:     td.brand.social     || '',
+      trends:     td.trends           || '',
+      property:   td.property         || '',
+      aiResponse: td.aiResponse       || ''
     });
-    for(const [name,v] of Object.entries(td.competitors||{})) {
-      const row = [[date,v.time||'',name,v.sentiment||'',v.mentions||'',v.activity||'',v.notes||'']];
-      await fetch(`${base}/Competitor_Scans!A:G:append?valueInputOption=RAW&key=${S.settings.gKey}`,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({values:row})
+
+    // Write each competitor
+    for(const [name, v] of Object.entries(td.competitors || {})) {
+      await postToWebhook(webhook, {
+        type:       'competitor',
+        date:       date,
+        time:       v.time      || '',
+        competitor: name,
+        sentiment:  v.sentiment || '',
+        mentions:   v.mentions  || '',
+        activity:   v.activity  || '',
+        notes:      v.notes     || ''
       });
     }
-    addAlert('Data synced to Google Sheets','pos');
-  } catch(e){ console.warn('Sheets sync failed:',e); }
+
+    addAlert('✓ Data synced to Google Sheets', 'pos');
+
+  } catch(e) {
+    console.warn('Webhook write failed:', e);
+    addAlert('⚠ Google Sheets sync failed — data saved locally', 'neg');
+  }
+}
+
+// ── POST helper ────────────────────────────────────────────────
+async function postToWebhook(url, data) {
+  const r = await fetch(url, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(data)
+  });
+  return r.json();
+}
+
+// ── Sync saved insight to Sheets ───────────────────────────────
+async function syncInsightToSheets(insight) {
+  if(!S.settings.webhook) return;
+  try {
+    await postToWebhook(S.settings.webhook, {
+      type:     'insight',
+      date:     insight.date,
+      title:    insight.title,
+      category: insight.title.split('—')[0].trim(),
+      content:  insight.content
+    });
+  } catch(e) { console.warn('Insight sync failed:', e); }
 }
 
 // ══════════════════════════════════════════
